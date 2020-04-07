@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -15,9 +16,9 @@ import javax.validation.constraints.Size;
 import org.springframework.stereotype.Component;
 
 /**
- * Admin class that represents the admins. All admins have an id and a username.
+ * Admin class that represents the admins. All admins have an id, username, and password.
  * 
- * @author Adonis Cabreja
+ * @author Adonis Cabreja, David Anderson, Mason King
  *
  */
 
@@ -38,6 +39,12 @@ public class Admin implements Serializable {
 	@Size(min=3,max=12)
 	@Pattern(regexp="^\\w+\\.?\\w+$")
 	private String userName;
+	
+	@Valid
+	@NotBlank
+	@Column(name = "password")
+	@Size(min=6, max=20)
+	private String password;
 	
 	public Admin() {
 		super();
@@ -63,6 +70,16 @@ public class Admin implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
