@@ -17,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.stereotype.Component;
 
 
@@ -36,16 +37,19 @@ import org.springframework.stereotype.Component;
 @Table(name="users")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="user_id")
-	private int userId;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name="user_id")
+//	private int userId;
 
+	
+	@Id
 	@Valid
 	@NotBlank
 	@Column(name="user_name")
 	@Size(min=3,max=12)
 	@Pattern(regexp="^\\w+\\.?\\w+$")
+	@Unique
 	private String userName;
 	
 	
@@ -216,12 +220,12 @@ public class User implements Serializable {
 //		this.wZip = wZip;
 //		this.wState = wState;
 //	}
-	public int getUserId() {
-		return userId;
-	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+//	public int getUserId() {
+//		return userId;
+//	}
+//	public void setUserId(int userId) {
+//		this.userId = userId;
+//	}
 	public String getUserName() {
 		return userName;
 	}
@@ -382,7 +386,7 @@ public class User implements Serializable {
 		result = prime * result + (isDriver ? 1231 : 1237);
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-		result = prime * result + userId;
+		//result = prime * result + userId;
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		result = prime * result + ((wAddress == null) ? 0 : wAddress.hashCode());
 		result = prime * result + ((wCity == null) ? 0 : wCity.hashCode());
@@ -431,8 +435,8 @@ public class User implements Serializable {
 				return false;
 		} else if (!phoneNumber.equals(other.phoneNumber))
 			return false;
-		if (userId != other.userId)
-			return false;
+//		if (userId != other.userId)
+//			return false;
 		if (userName == null) {
 			if (other.userName != null)
 				return false;
@@ -443,7 +447,7 @@ public class User implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", batch=" + batch + ", firstName=" + firstName
+		return "User [userName=" + userName + ", batch=" + batch + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", isDriver="
 				+ isDriver + ", isActive=" + isActive + ", isAcceptingRides=" + isAcceptingRides + ", hAddress="
 				+ hAddress + ", hCity=" + hCity + ", hZip=" + hZip + ", hState=" + hState + ", wAddress=" + wAddress

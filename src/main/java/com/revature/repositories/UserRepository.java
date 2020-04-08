@@ -17,7 +17,7 @@ import com.revature.beans.User;
  */
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, String> {
 	
 	/**
 	 * Custom query that uses the @Query annotation to select a user by isDriver.
@@ -36,8 +36,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	 * @return Check {@link com.revature.services.impl.UserServiceImpl}
 	 */
 	
-	@Query("select u from User u where u.userName = ?1")
-	public List<User> getUserByUsername(String username);
+//	@Query("select u from User u where u.userName = ?1")
+//	public User getUserByUsername(String username);
 	
 	/**
 	 * Custom query that uses the @Query annotation to select a user by isDriver and location.

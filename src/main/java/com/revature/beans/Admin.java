@@ -15,6 +15,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
+import com.revature.auth.ApplicationUser;
+
 /**
  * Admin class that represents the admins. All admins have an id, username, and password.
  * 
@@ -25,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 @Table(name="admins")
-public class Admin implements Serializable {
+public class Admin implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -34,6 +36,7 @@ public class Admin implements Serializable {
 	@Column(name="admin_id")
 	private int adminId;
 	
+	@Id
 	@NotBlank
 	@Column(name="user_name")
 	@Size(min=3,max=12)
@@ -46,15 +49,7 @@ public class Admin implements Serializable {
 	@Size(min=6, max=20)
 	private String password;
 	
-	public Admin() {
-		super();
-	}
-	
-	public Admin(int adminId, String userName) {
-		super();
-		this.adminId = adminId;
-		this.userName = userName;
-	}
+
 
 	public int getAdminId() {
 		return adminId;

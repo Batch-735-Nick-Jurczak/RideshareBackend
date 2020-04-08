@@ -1,6 +1,7 @@
 package com.revature.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,10 +47,10 @@ public class UserServiceImpl implements UserService {
 	 * @return A user that matches the id.
 	 */
 	
-	@Override
-	public User getUserById(int id) {
-		return ur.findById(id).get();
-	}
+//	@Override
+//	public User getUserById(int id) {
+//		return ur.findById(id).get();
+//	}
 	
 	/**
 	 * Calls UserRepository's custom query method getUserByUsername.
@@ -59,8 +60,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	
 	@Override
-	public List<User> getUserByUsername(String username) {
-		return ur.getUserByUsername(username);
+	public Optional<User> getUserByUsername(String username) {
+		return ur.findById(username);
 	}
 	
 	/**
@@ -120,9 +121,15 @@ public class UserServiceImpl implements UserService {
 	 */
 	
 	@Override
-	public String deleteUserById(int id) {
-		ur.deleteById(id);
-		return "User with id: " + id + " was deleted.";
+	public String deleteUserById(String username) {
+		ur.deleteById(username);
+		return "User with id: " + username + " was deleted.";
 	}
+
+//	@Override
+//	public User getUserById(int id) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }
