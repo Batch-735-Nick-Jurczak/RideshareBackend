@@ -6,6 +6,9 @@ addons:
     token:
       secure: "RZnCt7erSSs0gSMie0XO5YZJAAclWXeiCN5MQ1BQ0UvyQ02+WwreGUJPP/LWRtPSODJDZGd180iBhOwxzrpwwILOs7jco7iiTggRcYMxEbwxwALcEBHFNyNuclzT1PgcXljvdWTlkpeLrMbENurKXkKIGOAYWCOwHcNhhmwe0z+SPIM5V2b1aqoCDKGARvBCdLgzIt10EX19pcjNJmuXSO1u4TAWG/gSNN3rxN7xjtK8g16wfX1hK+k26LUSc8QzC4R+g01YWQcclTXyX81hs+HpXylHN5ANUbJD43kZfsxbqz/G/wLYe6duZEzsDy/CDY35v8hoamget1yQ2wFMOOm2TwJljZUP3I+dZf0m0knbHWkZm9nRBNUEQA36NmHNJ67M3iACvK0gUxNS2LtTxiUJz2ossCEVZX5BZuG3xbs6Dj+ugdOzAuqIOum7tiTAcqMazuK8Npt6UJLNATpqCd+bPWRIIjNMcBJfd/HTgDatXDuW8L4ACdZSSV32tfsfLYgJgmIcEI3oXh1Aj4GPYZcoEkeH/ygdTRx5i8w/E4Hl50hHxvNq8Tv0TPnPKTtLhoI7Dwh7DA6Kl24rEwsmQYeF0nw3euqT80uO0UNNIig4rtGTgkys7uphnqMnSdu12CTq8kXZXPnj6AYXpMUAu5R+rE39WceLhPLtv0G++m4=" # encrypted value of your token
 
+jdk: openjdk8
+
 script:
+  - jdk_switcher use openjdk8
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
