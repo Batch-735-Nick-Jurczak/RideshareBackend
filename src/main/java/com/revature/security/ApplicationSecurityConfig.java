@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import com.revature.auth.ApplicationUserService;
+import com.revature.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +40,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http
 		.csrf().disable()
+		.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
 		.authorizeRequests().antMatchers("/login").permitAll() //this is route based permissions
 		.antMatchers("/admins").hasRole(ApplicationUserRole.ADMIN.name()) //this is a role based authentication
 		.antMatchers(HttpMethod.GET,"/admins").hasAuthority(ApplicationUserPermissions.ADMIN_READ.name())
