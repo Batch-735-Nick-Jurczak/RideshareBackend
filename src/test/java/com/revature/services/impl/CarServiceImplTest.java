@@ -85,4 +85,14 @@ public class CarServiceImplTest {
 		
 		assertEquals(actual, expected);
 	}
+	
+	@Test
+	public void testGetCarsWithOpenSeats() {
+		List<Car> cars = new ArrayList<>();
+		cars.add(new Car(1, "red", 4, "Honda", "Accord", 2015, new User()));
+		cars.add(new Car(2, "red", 4, 1, "Honda", "Accord", 2015, new User()));
+		when(cr.getCarsWithOpenSeats()).thenReturn(cars);
+		
+		assertEquals(2, csi.getCarsWithOpenSeats().size());
+	}
 }

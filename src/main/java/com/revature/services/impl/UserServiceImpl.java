@@ -124,5 +124,17 @@ public class UserServiceImpl implements UserService {
 		ur.deleteById(id);
 		return "User with id: " + id + " was deleted.";
 	}
+	
+	/**
+	 * Call UserRepository's custom query method getActiveDriversWithOpenSeats.
+	 * 
+	 * @param batchNum represents the user's batch number.
+	 * @return A list of users whose cars have open seats.
+	 */
+	
+	@Override
+	public List<User> getActiveDriversWithOpenSeats(int batchNum) {
+		return ur.getActiveDriversWithOpenSeats(batchNum);
+	}
 
 }
