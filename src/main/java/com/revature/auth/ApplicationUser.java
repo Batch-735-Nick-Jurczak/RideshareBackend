@@ -52,6 +52,13 @@ public class ApplicationUser implements UserDetails {
 	@Size(min=6, max=20)
 	private String password;
 	
+	@Valid
+	@NotBlank
+	@Column(name = "role")
+	private String role;
+	
+	
+	
 	
 	@Column(name = "isAccountNonExpired")
 	private final boolean isAccountNonExpired;
