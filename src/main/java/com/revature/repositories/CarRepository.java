@@ -1,5 +1,7 @@
 package com.revature.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -26,4 +28,13 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 	
 	@Query("select c from Car c where c.user.userId = ?1")
 	public Car getCarByUserId(int userId);
+	
+	/**
+	 * Custom query that uses the @Query annotation to select cars with available seats greater than zero.
+	 * 
+	 * @return Check {@link com.revature.services.impl.CarServiceImpl}
+	 */
+	
+	@Query("select c from Car c where c.availableSeats > 0")
+	public List<Car> getCarsWithOpenSeats();
 }

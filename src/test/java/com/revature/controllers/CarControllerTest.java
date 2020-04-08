@@ -75,6 +75,19 @@ public class CarControllerTest {
 	}
 	
 	@Test
+    public void testGetCarsWithOpenSeats() throws Exception {
+
+        List<Car> cars = new ArrayList<>();
+        cars.add(new Car());
+        cars.add(new Car());
+        when(cs.getCarsWithOpenSeats()).thenReturn(cars);
+
+        mvc.perform(get("/cars?available-seats=true"))
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$", hasSize(2)));
+    }
+	
+	@Test
 	public void testAddingCar() throws Exception {
 				
 		Car car = new Car(1, "red", 4, "Honda", "Accord", 2015, new User());

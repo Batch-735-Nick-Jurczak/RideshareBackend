@@ -12,4 +12,5 @@ public interface CarService {
 	public Car addCar(Car car);
 	public Car updateCar(Car car);
 	public String deleteCarById(int id);
+	public List<Car> getCarsWithOpenSeats();
 }
