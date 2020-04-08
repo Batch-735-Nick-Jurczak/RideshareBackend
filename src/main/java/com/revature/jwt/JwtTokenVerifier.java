@@ -52,6 +52,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 			Claims body = claimsJws.getBody();
 			
 			String username = body.getSubject();
+			
 			@SuppressWarnings("unchecked")
 			List<Map<String, String>> authorities = (List<Map<String, String>>) body.get("auhorities");
 			
@@ -68,8 +69,8 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}catch(JwtException ex){
 			throw new IllegalStateException(String.format("Token %s cannot be trusted", token));
-		};
-		
+		}
+		filterChain.doFilter(req, resp);
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import com.revature.auth.ApplicationUserService;
+import com.revature.jwt.JwtTokenVerifier;
 import com.revature.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 
 @Configuration
@@ -44,6 +45,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 		.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager()))
+		.addFilterAfter(new JwtTokenVerifier(), JwtUsernameAndPasswordAuthenticationFilter.class)
 		.authorizeRequests().antMatchers("/login").permitAll() //this is route based permissions
 		.antMatchers("/admins").hasRole(ApplicationUserRole.ADMIN.name()) //this is a role based authentication
 		.antMatchers(HttpMethod.GET,"/admins").hasAuthority(ApplicationUserPermissions.ADMIN_READ.name())
