@@ -35,15 +35,26 @@ import org.springframework.context.annotation.Bean;
 @Component
 public class JwtTokenVerifier extends OncePerRequestFilter {
 	
+	
+	@Autowired
 	private ApplicationUserService appUserService;
 	
+	@Autowired
 	private JwtUtility jwtUtil;
+	
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain)
 			throws ServletException, IOException {
-		System.out.println("did entering class");
+		
+		
+		System.out.println("Inside the Filter");
+		
+		
 		String authHeader = req.getHeader("Authorization");
-	System.out.println(authHeader);
+		System.out.println(authHeader);
+		
+		
 		if(Strings.isNullOrEmpty(authHeader)|| !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(req, resp);
 			System.out.println("did not work");
