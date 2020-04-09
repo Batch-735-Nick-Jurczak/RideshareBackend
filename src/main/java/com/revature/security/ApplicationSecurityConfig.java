@@ -9,35 +9,45 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.revature.jwt.JwtTokenVerifier;
 import com.revature.jwt.JwtUsernameAndPasswordAuthenticationFilter;
-import com.revature.services.ApplicationUserService;
+import com.revature.services.impl.ApplicationUserService;
 
 
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private final PasswordEncoder passwordEncoder;
-	private final ApplicationUserService appService;
+	private ApplicationUserService appService;
 	
-	
+	private JwtTokenVerifier jwtTokenVerifier;
 	
 	
 	@Autowired
-	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, ApplicationUserService appService) {
-		this.passwordEncoder = passwordEncoder;
+	public ApplicationSecurityConfig(ApplicationUserService appService, JwtTokenVerifier jwtTokenVerifier) {
+		
 		this.appService = appService;
+		this.jwtTokenVerifier = jwtTokenVerifier;
 	}
-	
+
+
+
 
 	/**
 	 * This method uses our custom Application User Service to get the principle. For JPA you have to use a custom service, 
 	 * as spring security doesn't have an out of the box solution. 
 	 */
+
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		
 		
 		auth.userDetailsService(appService);
 		
@@ -49,12 +59,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-			//.sessionManagement()
-			//.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		http.csrf().disable()
+			.authorizeRequests().antMatchers("/auth").permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.addFilterBefore(jwtTokenVerifier,  UsernamePasswordAuthenticationFilter.class);
 			//.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager))
-			.authorizeRequests()
-			.antMatchers("/**").permitAll();
+//			.authorizeRequests()
+//			.antMatchers("/admins").hasRole("USER")
+//			.antMatchers("/","/app").permitAll().and().formLogin();
 		//	.antMatchers("/**").hasAnyRole("USER", "ADMIN");
 			
 	}
@@ -68,7 +83,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PasswordEncoder getPasswordEncoder() {
-		return passwordEncoder;
+		return NoOpPasswordEncoder.getInstance();
 	}
 	
 }

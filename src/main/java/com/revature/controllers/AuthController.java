@@ -16,7 +16,7 @@ import com.revature.beans.ApplicationUser;
 import com.revature.jwt.AuthenticationResponse;
 import com.revature.jwt.JwtUtility;
 import com.revature.jwt.UsernameAndPasswordAuthenticationRequest;
-import com.revature.services.ApplicationUserService;
+import com.revature.services.impl.ApplicationUserService;
 
 import io.swagger.annotations.Api;
 
@@ -47,7 +47,7 @@ public class AuthController {
 				throw new Exception("Invalid username and password combination", e);
 			}
 		final UserDetails appUser = appService.loadUserByUsername(authRequest.getUsername());
-		final String jwt = jwtUtil.generateWebToken((ApplicationUser) appUser);
+		final String jwt = jwtUtil.generateWebToken(new ApplicationUser(appUser));
 		
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 		

@@ -1,8 +1,10 @@
 package com.revature.beans;
 
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -32,7 +35,7 @@ public class ApplicationUser implements UserDetails {
 	 * Initial values for the application user
 	 */
 	@Transient
-	private final List<? extends GrantedAuthority> grantedAuthority;
+	private List<? extends GrantedAuthority> grantedAuthority;
 	
 	@Id
 	@Valid
@@ -55,20 +58,23 @@ public class ApplicationUser implements UserDetails {
 	private String role;
 	
 	
+
 	
 	
 	@Column(name = "isAccountNonExpired")
-	private final boolean isAccountNonExpired;
+	private boolean isAccountNonExpired;
 	
 	@Column(name = "isAccountNonLocked")
-	private final boolean isAccountNonLocked;
+	private boolean isAccountNonLocked;
 	
 	@Column(name = "isCredentialsNonExpired")
-	private final boolean isCredentialsNonExpired;
+	private boolean isCredentialsNonExpired;
 	
 	@Column(name = "isEnabled")
-	private final boolean isEnabled;
+	private boolean isEnabled;
 	
+	@Column(name = "active")
+	private boolean active;
 	
 	
 	
@@ -84,27 +90,49 @@ public class ApplicationUser implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return password;
+		return username;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return isAccountNonExpired;
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return isAccountNonLocked;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return isCredentialsNonExpired;
+		return true;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return isEnabled;
+		return active;
+	}
+	
+	
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public ApplicationUser(List<? extends GrantedAuthority> grantedAuthority, String username, String password,
@@ -119,6 +147,31 @@ public class ApplicationUser implements UserDetails {
 		this.isAccountNonLocked = isAccountNonLocked;
 		this.isCredentialsNonExpired = isCredentialsNonExpired;
 		this.isEnabled = isEnabled;
+	}
+	public ApplicationUser(User user) {
+		this.username = user.getFirstName();
+		this.password = user.getPassword();
+		this.active = user.isActive();
+		this.grantedAuthority = Arrays.stream(user.getRole().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	}
+
+	
+	public ApplicationUser(UserDetails userD) {
+		super();
+		this.grantedAuthority = Arrays.stream(userD.getAuthorities().toString().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+		this.username = userD.getUsername();
+		this.password = userD.getPassword();
+		this.role = "User";
+		this.isAccountNonExpired = userD.isAccountNonExpired();
+		this.isAccountNonLocked = userD.isAccountNonLocked();
+		this.isCredentialsNonExpired = userD.isCredentialsNonExpired();
+		this.isEnabled = userD.isEnabled();
+		
+	}
+
+	public ApplicationUser() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

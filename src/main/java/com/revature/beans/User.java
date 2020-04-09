@@ -34,6 +34,12 @@ public class User implements Serializable {
 
 	@Valid
 	@NotBlank
+	@Column(name = "password")
+	@Size(min=6, max=20)
+	private String password;
+	
+	@Valid
+	@NotBlank
 	@Column(name="user_name")
 	@Size(min=3,max=12)
 	@Pattern(regexp="^\\w+\\.?\\w+$")
@@ -93,6 +99,9 @@ public class User implements Serializable {
 	@NotBlank
 	@Column(name = "w_state")
 	private String wState;
+	@NotBlank
+	@Column(name = "roles")
+	private String role;
 	
 	public User() {
 		super();
@@ -196,6 +205,74 @@ public class User implements Serializable {
 		this.wZip = wZip;
 		this.wState = wState;
 	}
+	
+	
+	public User(int userId,
+			@Valid @NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName, Batch batch,
+			@Valid @NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z\\u00C0-\\u017F]+[- ]?[a-zA-Z\\u00C0-\\u017F]+$") String firstName,
+			@Valid @NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z\\u00C0-\\u017F]+[- ]?[a-zA-Z\\u00C0-\\u017F]+$") String lastName,
+			@NotBlank @Email @Pattern(regexp = "^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$") String email,
+			@NotBlank @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$") String phoneNumber,
+			boolean isDriver, boolean isActive, boolean isAcceptingRides, @NotBlank String hAddress,
+			@NotBlank String hCity, @NotBlank String hZip, @NotBlank String hState, @NotBlank String wAddress,
+			@NotBlank String wCity, @NotBlank String wZip, @NotBlank String wState, @NotBlank String role) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.batch = batch;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.isDriver = isDriver;
+		this.isActive = isActive;
+		this.isAcceptingRides = isAcceptingRides;
+		this.hAddress = hAddress;
+		this.hCity = hCity;
+		this.hZip = hZip;
+		this.hState = hState;
+		this.wAddress = wAddress;
+		this.wCity = wCity;
+		this.wZip = wZip;
+		this.wState = wState;
+		this.role = role;
+	}
+
+	
+
+	public User(int userId, @Valid @NotBlank @Size(min = 6, max = 20) String password,
+			@Valid @NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName, Batch batch,
+			@Valid @NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z\\u00C0-\\u017F]+[- ]?[a-zA-Z\\u00C0-\\u017F]+$") String firstName,
+			@Valid @NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z\\u00C0-\\u017F]+[- ]?[a-zA-Z\\u00C0-\\u017F]+$") String lastName,
+			@NotBlank @Email @Pattern(regexp = "^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$") String email,
+			@NotBlank @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$") String phoneNumber,
+			boolean isDriver, boolean isActive, boolean isAcceptingRides, @NotBlank String hAddress,
+			@NotBlank String hCity, @NotBlank String hZip, @NotBlank String hState, @NotBlank String wAddress,
+			@NotBlank String wCity, @NotBlank String wZip, @NotBlank String wState, @NotBlank String role) {
+		super();
+		this.userId = userId;
+		this.password = password;
+		this.userName = userName;
+		this.batch = batch;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.isDriver = isDriver;
+		this.isActive = isActive;
+		this.isAcceptingRides = isAcceptingRides;
+		this.hAddress = hAddress;
+		this.hCity = hCity;
+		this.hZip = hZip;
+		this.hState = hState;
+		this.wAddress = wAddress;
+		this.wCity = wCity;
+		this.wZip = wZip;
+		this.wState = wState;
+		this.role = role;
+	}
+
+
 	public int getUserId() {
 		return userId;
 	}
@@ -208,6 +285,17 @@ public class User implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 	public Batch getBatch() {
 		return batch;
 	}
@@ -334,6 +422,17 @@ public class User implements Serializable {
 
 	public void setwState(String wState) {
 		this.wState = wState;
+	}
+	
+
+
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = "ROLE_USER";
 	}
 
 

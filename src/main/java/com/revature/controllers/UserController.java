@@ -134,7 +134,7 @@ public class UserController {
 		} else if (isDriver != null) {
 			return us.getUserByRole(isDriver.booleanValue());
 		} else if (username != null) {
-			return us.getUserByUsername(username);
+			return us.getUsersByUsername(username);
 		}
 		
 		return us.getUsers();

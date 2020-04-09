@@ -5,18 +5,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.revature.beans.ApplicationUser;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtUtility {
 
-	private String SECRET_KEY = "ridesharesecretkey";
+	private String SECRET_KEY = "revaturesupersecurekeyfortherideshareapplicationitissupposedtobethislongyesiknowitislong";
 	
 	
 	/**
@@ -27,9 +30,9 @@ public class JwtUtility {
 	 * This method takes in an ApplicationUser (Which implements the Spring Security User Class) and calls the create token method with 
 	 * the user's username.
 	 */
-	public String generateWebToken(ApplicationUser applicationUser) {
+	public String generateWebToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return createWebToken(claims, applicationUser.getUsername());
+		return createWebToken(claims, userDetails.getUsername());
 	}
 	
 	
@@ -43,13 +46,14 @@ public class JwtUtility {
 	 * ApplicationUser username.
 	 */
 	private String createWebToken(Map<String, Object> claims, String owner) {
-		return Jwts.builder().setClaims(claims).setSubject(owner)
-				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+		return Jwts.builder().setClaims(claims).setSubject(owner).setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
+				.signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).compact();
 	}
 	
 	
 	
-	public Boolean validateWebToken(String token, ApplicationUser applicationUser) {
+	public Boolean validateWebToken(String token, UserDetails applicationUser) {
 		
 		final String username = extractUsername(token);
 		return (username.equals(applicationUser.getUsername()));
@@ -61,7 +65,13 @@ public class JwtUtility {
 	}
 	
 	private Claims extractAllClaims(String token) {
-		return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+		Jws<Claims> claimsJws;
+		claimsJws = Jwts.parserBuilder()
+				.setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+				.build()
+				.parseClaimsJws(token);
+		Claims body = claimsJws.getBody();
+		return body;
 	}
 	
 	public String extractUsername(String token) {

@@ -51,8 +51,8 @@ public class UserServiceImplTest {
 		
 		List<User> expected = new ArrayList<>();
 		expected.add(new User(1, "userName", new Batch(), "adonis", "cabreja", "adonis@gmail.com", "123-456-789"));
-		when(ur.getUserByUsername("userName")).thenReturn(expected);
-		List<User> actual = usi.getUserByUsername("userName");
+		when(ur.getUsersByUsername("userName")).thenReturn(expected);
+		List<User> actual = usi.getUsersByUsername("userName");
 		
 		assertEquals(expected, actual);
 	}
