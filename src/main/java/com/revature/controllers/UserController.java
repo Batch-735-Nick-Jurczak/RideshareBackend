@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -26,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.maps.errors.ApiException;
-import com.revature.Driver;
-import com.revature.beans.Batch;
 import com.revature.beans.User;
 import com.revature.services.BatchService;
 import com.revature.services.DistanceService;
@@ -60,35 +57,18 @@ public class UserController {
 	@Autowired
 	private DistanceService ds;
 	
-	/**
-	 * HTTP GET method (/users)
-	 * 
-	 * @param isDriver represents if the user is a driver or rider.
-	 * @param username represents the user's username.
-	 * @param location represents the batch's location.
-	 * @return A list of all the users, users by is-driver, user by username and users by is-driver and location.
-	 */
-	
-	
-	/*@ApiOperation(value="Returns user drivers", tags= {"User"})
-	@GetMapping
-	public List<User> getActiveDrivers() {
-		return us.getActiveDrivers();
-	}*/
-	
-	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
-		//List<User> aps =  new ArrayList<User>();
+		
 		System.out.println(address);
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
-//		
+	
 	    Map<String, User> topfive = new HashMap<String, User>();
-//		
+	
 		for(User d : us.getActiveDrivers()) {
-//			
+		
 			String add = d.gethAddress();
 			String city = d.gethCity();
 			String state = d.gethState();
@@ -96,22 +76,17 @@ public class UserController {
 			String fullAdd = add + ", " + city + ", " + state;
 			
 			destinationList.add(fullAdd);
-//			
-			topfive.put(fullAdd, d);
-//						
-	}
-//		
-//		System.out.println(destinationList);
-//		
-		String [] destinations = new String[destinationList.size()];
-////		
-	destinations = destinationList.toArray(destinations);
-//		
-	return	ds.distanceMatrix(origins, destinations);
-//		
-//		
-		//return ds.distanceMatrix();	
 		
+			topfive.put(fullAdd, d);
+					
+	}
+
+	String [] destinations = new String[destinationList.size()];
+	
+	destinations = destinationList.toArray(destinations);
+	
+	return	ds.distanceMatrix(origins, destinations);
+
 	}
 	
 	/**
@@ -174,7 +149,7 @@ public class UserController {
 		      String code = fieldError.getCode();
 		      String field = fieldError.getField();
 		      if (code.equals("NotBlank") || code.equals("NotNull")) {
-//		    	  
+	    	  
 		    	  switch (field) {
 		    	  case "userName":
 		    		  errors.computeIfAbsent(field, key -> new HashSet<>()).add("Username field required");
@@ -274,7 +249,6 @@ public class UserController {
 	@ApiOperation(value="Updates user by id", tags= {"User"})
 	@PutMapping
 	public User updateUser(@Valid @RequestBody User user) {
-		//System.out.println(user);
 		return us.updateUser(user);
 	}
 	
@@ -291,6 +265,5 @@ public class UserController {
 		
 		return us.deleteUserById(id);
 	}
-	
-	
+
 }
