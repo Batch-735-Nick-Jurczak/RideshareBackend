@@ -23,6 +23,8 @@ public class ApplicationUserService implements ApplicationUserServe,UserDetailsS
 
 	
 	private ApplicationUserRepository aur;
+	private AdminServiceImpl as;
+	private UserServiceImpl us;
 	/**
 	 * 
 	 * @param ApplicationUserRepository
@@ -31,11 +33,12 @@ public class ApplicationUserService implements ApplicationUserServe,UserDetailsS
 	 * Application User service
 	 */
 	@Autowired
-	public ApplicationUserService(ApplicationUserRepository aur) {
+	public ApplicationUserService(ApplicationUserRepository aur, AdminServiceImpl as, UserServiceImpl us) {
 		super();
 		this.aur = aur;
+		this.as = as;
+		this.us = us;
 	}
-
 
 	/**
 	 * @param String username
@@ -58,10 +61,20 @@ public class ApplicationUserService implements ApplicationUserServe,UserDetailsS
 				.build();
 		return users;
 	}
+	
+
+
+	/**
+	 * @return A list of all the applicationUsers in the H2 database
+	 */
 	public List<ApplicationUser> getAppUsersByUsername(){
 			return aur.findAll();
 		}
 	
+	
+	public void insertApplicationUser(ApplicationUser appUser) {
+		aur.save(appUser);
+	}
 	
 	
 }

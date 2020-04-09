@@ -3,11 +3,11 @@ insert into batches values
 (2, 'Virginia');
 
 insert into admins values
-(1, 'admin1');
+('admin', 'ADMIN');
 
 insert into applicationusers values('gpichmann0', true, true,true,true,true,'password','USER');
 insert into applicationusers values('smigheli1', true, true,true,true,true,'password','USER');
-insert into applicationusers values('david', true, true,true,true,true,'password','USER');
+insert into applicationusers values('admin', true, true,true,true,true,'password','USER');
 
 insert into users values 
 (1, 'gpichmann0@artisteer.com', 'Grady', '5 Carpenter Plaza', 'New York City', 'NY', '10275', True, True, True, 'Pichmann','password', '212-374-3466','ADMIN','gpichmann0' ,'30401 Esker Point', 'Des Moines', 'IA', '50347', 1),

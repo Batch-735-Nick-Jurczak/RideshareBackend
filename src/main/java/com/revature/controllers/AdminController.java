@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.Admin;
+import com.revature.beans.ApplicationUser;
 import com.revature.services.AdminService;
+import com.revature.services.impl.ApplicationUserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +42,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService as;
+	
+	@Autowired
+	private ApplicationUserService appService;
 	
 	/**
 	 * HTTP GET method (/users)
@@ -69,10 +74,14 @@ public class AdminController {
 	}
 	
 	/**
-	 * HTTP POST method (/users)
+	 * HTTP POST method (/admins)
+	 * 
+	 * Returns the admin object, as well as adds the admin to the ApplicationUser table with the role of "ADMIN"
+	 * for Spring Security
 	 * 
 	 * @param admin represents the new Admin object being sent.
 	 * @return The newly created object with a 201 code.
+	 * 
 	 */
 	
 	@ApiOperation(value="Adds a new admin", tags= {"Admin"})

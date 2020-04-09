@@ -1,5 +1,10 @@
 package com.revature.controllers;
 
+import java.io.PrintWriter;
+import java.util.Optional;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,11 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.beans.Admin;
 import com.revature.beans.ApplicationUser;
+import com.revature.beans.User;
 import com.revature.jwt.AuthenticationResponse;
 import com.revature.jwt.JwtUtility;
 import com.revature.jwt.UsernameAndPasswordAuthenticationRequest;
+import com.revature.services.UserService;
+import com.revature.services.impl.AdminServiceImpl;
 import com.revature.services.impl.ApplicationUserService;
+import com.revature.services.impl.UserServiceImpl;
 
 import io.swagger.annotations.Api;
 
@@ -35,6 +46,10 @@ public class AuthController {
 	@Autowired
 	private JwtUtility jwtUtil;
 	
+	@Autowired
+	private UserServiceImpl us;
+	
+	@Autowired AdminServiceImpl as;
 	
 	@PostMapping
 	public ResponseEntity<?> createAuthToken(@RequestBody UsernameAndPasswordAuthenticationRequest authRequest) throws Exception {
@@ -49,7 +64,27 @@ public class AuthController {
 		final UserDetails appUser = appService.loadUserByUsername(authRequest.getUsername());
 		final String jwt = jwtUtil.generateWebToken(new ApplicationUser(appUser));
 		
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+	
+		Optional<User> user = us.getUserByUsername(authRequest.getUsername());
+		Optional<Admin> admin = as.getAdminById(authRequest.getUsername());
+		
+		if(user.isPresent()) {
+			user.get().setToken(jwt);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(user.get());
+			return ResponseEntity.ok(json);
+		}
+		else {
+			
+			admin.get().setToken(jwt);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(admin.get());
+			return ResponseEntity.ok(json);
+		}
+			
+
+
+	
 		
 	}
 }

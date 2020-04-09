@@ -47,13 +47,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		
-		System.out.println("Inside the Filter");
-		
-		
 		String authHeader = req.getHeader("Authorization");
-		System.out.println(authHeader);
-		
 		
 		if(Strings.isNullOrEmpty(authHeader)|| !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(req, resp);
@@ -61,23 +55,11 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 			return;
 		}
 		
-		Jws<Claims> claimsJws;
 		String token = authHeader.substring(7);
-		System.out.println(token + "line 56");
 		String usernameFromToken = jwtUtil.extractUsername(token);
-		System.out.println(usernameFromToken);
 		try {
 			
-			
 			String secretKey = "revaturesupersecurekeyfortherideshareapplicationitissupposedtobethislongyesiknowitislong";
-			
-			claimsJws = Jwts.parserBuilder()
-				.setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-				.build()
-				.parseClaimsJws(token);
-			
-			
-			
 			
 		if(usernameFromToken != null && SecurityContextHolder.getContext().getAuthentication()==null) {
 			UserDetails userDetails = this.appUserService.loadUserByUsername(usernameFromToken);
