@@ -5,6 +5,13 @@ insert into batches values
 insert into admins values
 (1, 'admin1');
 
+
+insert into applicationusers values
+('admin1', true, true, true, true, 'password', 'ADMIN'),
+('gpichmann0', true, true, true, true, 'password', 'USER'),
+('smigheli1', true, true, true, true, 'password', 'USER');
+
+
 insert into users values 
 (1, 'gpichmann0@artisteer.com', 'Grady', '5 Carpenter Plaza', 'New York City', 'NY', '10275', false, false, false, 'Pichmann', '212-374-3466', 'gpichmann0', '30401 Esker Point', 'Des Moines', 'IA', '50347', 1),
 (2, 'smigheli1@indiatimes.com', 'Salvidor', '6371 Elka Court', 'Columbus', 'OH', '43220', true, true, true, 'Migheli', '614-513-2776', 'smigheli1', '35747 3rd Park', 'Philadelphia', 'PA', '19131', 1),
