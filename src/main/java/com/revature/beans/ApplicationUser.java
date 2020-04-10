@@ -21,10 +21,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 
-/*
+/**
  * This class implements a Spring Security Interface "UserDetails". This will handle checking the username and passwords of users and get what they're
- * Authorized to do. It also checks for expired accounts, credentials, locked, or disabled accounts. It's essential a 
- * Springboot model for a user.
+ * Authorized to do. It also checks for expired accounts, credentials, locked, or disabled accounts. It's essentially a 
+ * Spring Security model for a user. Whenever any user, including admins, are created, they also need to be added to this table as this is where the authentication happens.
  */
 @Entity
 @Table(name = "applicationusers")

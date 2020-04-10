@@ -17,9 +17,9 @@ import javax.validation.constraints.Size;
 import org.springframework.stereotype.Component;
 
 /**
- * Admin class that represents the admins. All admins have an id and a username.
+ * Admin class that represents the admins. All admins have a username and a role that is always ADMIN for now.
  * 
- * @author Adonis Cabreja
+ * @author Adonis Cabreja, David Anderson
  *
  */
 

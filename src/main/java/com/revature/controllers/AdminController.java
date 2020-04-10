@@ -68,9 +68,9 @@ public class AdminController {
 	
 	@ApiOperation(value="Returns admin by id", tags= {"Admin"})
 	@GetMapping("/{id}")
-	public Admin getAdminById(@PathVariable("id")int id) {
+	public Admin getAdminById(@PathVariable("username") String username) {
 		
-		return as.getAdminById(id);
+		return as.getAdminById(username).get();
 	}
 	
 	/**
@@ -114,8 +114,8 @@ public class AdminController {
 	
 	@ApiOperation(value="Deletes an admin by id", tags= {"Admin"})
 	@DeleteMapping("/{id}")
-	public String deleteAdmin(@PathVariable("id")int id) {
+	public String deleteAdmin(@PathVariable("username")String username) {
 		
-		return as.deleteAdminById(id);
+		return as.deleteAdminById(username);
 	}
 }

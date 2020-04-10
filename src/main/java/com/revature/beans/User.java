@@ -23,6 +23,14 @@ import org.springframework.stereotype.Component;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * This model represents the users of the app that are not admins, rather the riders and drivers.
+ * 
+ *
+ */
+
+
+
 @Component
 @Entity
 @Table(name="users")
