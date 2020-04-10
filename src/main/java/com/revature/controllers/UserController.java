@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -76,6 +79,7 @@ public class UserController {
 	
 
 	
+
 //	/**
 //	 * HTTP GET method (/users)
 //	 * 
@@ -86,6 +90,13 @@ public class UserController {
 //	public List<User> getActiveDrivers() {
 //		return us.getActiveDrivers();
 //	}
+
+	/*@ApiOperation(value="Returns user drivers", tags= {"User"})
+	@GetMapping
+	public List<User> getActiveDrivers() {
+		return us.getActiveDrivers();
+	}*/
+
 	
 	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
@@ -147,11 +158,25 @@ public class UserController {
 	 * @return A user that matches the id.
 	 */
 	
-	@ApiOperation(value="Returns user by id", tags= {"User"})
-	@GetMapping("/{id}")
-	public User getUserById(@PathVariable("id")int id) {
+//	@ApiOperation(value="Returns user by id", tags= {"User"})
+//	@GetMapping("/{id}")
+//	public User getUserById(@PathVariable("id")int id) {
+//		
+//		return us.getUserById(id);
+//	}
+//	
+	/**
+	 * HTTP GET (users/{userName})
+	 * 
+	 * @param id represents the user's id.
+	 * @return A user that matches the id.
+	 */
+	
+	@ApiOperation(value="Returns user by userName", tags= {"User"})
+	@GetMapping("/{userName}")
+	public User getUserByUserName(@PathVariable("userName")String userName) {
 		
-		return us.getUserById(id);
+		return us.getUserByUsername(userName).get();
 	}
 	
 	/**
