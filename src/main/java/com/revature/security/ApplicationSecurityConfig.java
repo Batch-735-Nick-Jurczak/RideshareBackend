@@ -3,6 +3,7 @@ package com.revature.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -70,18 +71,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
+			.cors().and()
 			.authorizeRequests().antMatchers("/auth").permitAll()
+			.antMatchers(HttpMethod.OPTIONS).permitAll()
 			.anyRequest().authenticated()
 			.and()
+			.addFilterBefore(jwtTokenVerifier,  UsernamePasswordAuthenticationFilter.class)
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(jwtTokenVerifier,  UsernamePasswordAuthenticationFilter.class);
-			//.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager))
-//			.authorizeRequests()
-//			.antMatchers("/admins").hasRole("USER")
-//			.antMatchers("/","/app").permitAll().and().formLogin();
-		//	.antMatchers("/**").hasAnyRole("USER", "ADMIN");
-			
+
 	}
 	
 	
