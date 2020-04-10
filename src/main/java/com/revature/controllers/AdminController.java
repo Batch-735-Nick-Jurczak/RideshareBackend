@@ -27,10 +27,10 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * AdminController takes care of handling our requests to /admins.
- * It provides methods that can perform tasks like all admins, admin by id, add admin, update admin, and
- * delete admin by id.
+ * It provides methods that can perform tasks like all admins, admin by username, add admin, update admin, and
+ * delete admin by username.
  * 
- * @author Adonis Cabreja
+ * @author Adonis Cabreja, David Anderson
  *
  */
 
@@ -39,6 +39,8 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Api(tags= {"Admin"})
 public class AdminController {
+	
+	
 	
 	@Autowired
 	private AdminService as;
@@ -60,14 +62,14 @@ public class AdminController {
 	}
 	
 	/**
-	 * HTTP GET method (/users/{id})
+	 * HTTP GET method (/users/{username})
 	 * 
-	 * @param id represents the admin's id.
-	 * @return An admin that matches the id.
+	 * @param username represents the admin's username.
+	 * @return An admin that matches the username.
 	 */
 	
-	@ApiOperation(value="Returns admin by id", tags= {"Admin"})
-	@GetMapping("/{id}")
+	@ApiOperation(value="Returns admin by username", tags= {"Admin"})
+	@GetMapping("/{username}")
 	public Admin getAdminById(@PathVariable("username") String username) {
 		
 		return as.getAdminById(username).get();
@@ -98,22 +100,22 @@ public class AdminController {
 	 * @return The newly updated object.
 	 */
 	
-	@ApiOperation(value="Updates admin by id", tags= {"Admin"})
-	@PutMapping("/{id}")
+	@ApiOperation(value="Updates admin by username", tags= {"Admin"})
+	@PutMapping("/{username}")
 	public Admin updateAdmin(@Valid @RequestBody Admin admin) {
 		
 		return as.updateAdmin(admin);
 	}
 	
 	/**
-	 * HTTP DELETE method (/users/{id})
+	 * HTTP DELETE method (/users/{username})
 	 * 
-	 * @param id represents the admin's id.
+	 * @param username represents the admin's username.
 	 * @return A string that says which admin was deleted.
 	 */
 	
-	@ApiOperation(value="Deletes an admin by id", tags= {"Admin"})
-	@DeleteMapping("/{id}")
+	@ApiOperation(value="Deletes an admin by username", tags= {"Admin"})
+	@DeleteMapping("/{username}")
 	public String deleteAdmin(@PathVariable("username")String username) {
 		
 		return as.deleteAdminById(username);

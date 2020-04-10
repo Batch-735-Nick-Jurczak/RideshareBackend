@@ -12,20 +12,19 @@ import com.revature.beans.User;
 
 @Repository
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, String> {
+	
 	/**
-	 * Custom query that uses the @Query annotation to select a user by username.
+	 * Custom query that uses the Query annotation to select a user by username.
 	 * 
 	 * @param username represents the user's username.
-	 * @return Check {@link com.revature.services.impl.UserServiceImpl}
+	 * @return Returns an Optional with a user inside.
 	 */
-	
 	@Query("select u from ApplicationUser u where u.username = ?1")
 	public Optional<ApplicationUser> getUserByUsername(String username);
 	/**
-	 * Custom query that uses the @Query annotation to select a user by username.
+	 * Custom query that uses the Query annotation to select a user by username.
 	 * 
-	 * @param username represents the user's username.
-	 * @return Check {@link com.revature.services.impl.UserServiceImpl}
+	 * @return Returns a list of ApplicationUsers
 	 */
 	
 	@Query("select u from User u where u.userName = ?1")

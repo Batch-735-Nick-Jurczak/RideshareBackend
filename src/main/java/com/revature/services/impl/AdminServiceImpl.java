@@ -63,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
 	/**
 	 * Calls AdminRepository's deleteById method found in the JpaRepository.
 	 * 
-	 * @param id represents admin's id.
+	 * @param username represents admin's username.
 	 * @return A string that says which admin was deleted.
 	 */
 	

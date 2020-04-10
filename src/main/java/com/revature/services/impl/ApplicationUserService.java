@@ -26,11 +26,11 @@ public class ApplicationUserService implements ApplicationUserServe,UserDetailsS
 	private AdminServiceImpl as;
 	private UserServiceImpl us;
 	/**
-	 * 
-	 * @param ApplicationUserRepository
-	 * 
-	 * This constructor creates/autowires our Application User Repository into our 
-	 * Application User service
+	 * This constructor autowires the services needed for the application user service
+	 *  
+	 * @param aur  Autowired ApplicationUser Repository
+	 * @param as Autowired Admin Service
+	 * @param us Autowired User service
 	 */
 	@Autowired
 	public ApplicationUserService(ApplicationUserRepository aur, AdminServiceImpl as, UserServiceImpl us) {
@@ -41,11 +41,11 @@ public class ApplicationUserService implements ApplicationUserServe,UserDetailsS
 	}
 
 	/**
-	 * @param String username
+	 * This is essentially a find by id for our application user.
+	 * 
+	 * @param username Application user's username
 	 * 
 	 * @return An ApplicationUser (it implements UserDetails)
-	 * 
-	 * This is essentially a find by id for our application user.
 	 */
 	
 	@Override
@@ -65,6 +65,8 @@ public class ApplicationUserService implements ApplicationUserServe,UserDetailsS
 
 
 	/**
+	 * This method returns a list of all the application users
+	 * 
 	 * @return A list of all the applicationUsers in the H2 database
 	 */
 	public List<ApplicationUser> getAppUsersByUsername(){

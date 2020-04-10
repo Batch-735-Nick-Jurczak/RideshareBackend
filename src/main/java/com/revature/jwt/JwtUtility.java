@@ -18,17 +18,21 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtUtility {
+	
+	/**
+	 * Our current secret key used for the signature of our web tokens
+	 */
 
 	private String SECRET_KEY = "revaturesupersecurekeyfortherideshareapplicationitissupposedtobethislongyesiknowitislong";
 	
 	
 	/**
+	 *  This method takes in an ApplicationUser (Which implements the Spring Security User Class) and calls the create token method with 
+	 * the user's username.
 	 * 
-	 * @param applicationUser
+	 * @param userDetails This is our ApplicationUser object
 	 * @return A new JWT 
 	 * 
-	 * This method takes in an ApplicationUser (Which implements the Spring Security User Class) and calls the create token method with 
-	 * the user's username.
 	 */
 	public String generateWebToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
@@ -37,13 +41,14 @@ public class JwtUtility {
 	
 	
 	/**
+	 * This method is called by the generateWebToken method to create a token with the secret key and 
+	 * ApplicationUser username.
 	 * 
 	 * @param claims
 	 * @param owner
-	 * @return JWT 
+	 * @return This returns the JWT, a string. 
 	 * 
-	 * This method is called by the generateWebToken method to create a token with the secret key and 
-	 * ApplicationUser username.
+
 	 */
 	private String createWebToken(Map<String, Object> claims, String owner) {
 		return Jwts.builder().setClaims(claims).setSubject(owner).setIssuedAt(new Date(System.currentTimeMillis()))

@@ -60,21 +60,18 @@ public class UserController {
 	@Autowired
 	private DistanceService ds;
 	
-	/**
-	 * HTTP GET method (/users)
-	 * 
-	 * @param isDriver represents if the user is a driver or rider.
-	 * @param username represents the user's username.
-	 * @param location represents the batch's location.
-	 * @return A list of all the users, users by is-driver, user by username and users by is-driver and location.
-	 */
+
 	
-	
-	/*@ApiOperation(value="Returns user drivers", tags= {"User"})
-	@GetMapping
-	public List<User> getActiveDrivers() {
-		return us.getActiveDrivers();
-	}*/
+//	/**
+//	 * HTTP GET method (/users)
+//	 * 
+//	 * @return A list of all the users, users by is-driver, user by username and users by is-driver and location.
+//	 */
+//	@ApiOperation(value="Returns user drivers", tags= {"User"})
+//	@GetMapping
+//	public List<User> getActiveDrivers() {
+//		return us.getActiveDrivers();
+//	}
 	
 	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
@@ -96,21 +93,11 @@ public class UserController {
 			String fullAdd = add + ", " + city + ", " + state;
 			
 			destinationList.add(fullAdd);
-//			
 			topfive.put(fullAdd, d);
-//						
 	}
-//		
-//		System.out.println(destinationList);
-//		
 		String [] destinations = new String[destinationList.size()];
-////		
 	destinations = destinationList.toArray(destinations);
-//		
 	return	ds.distanceMatrix(origins, destinations);
-//		
-//		
-		//return ds.distanceMatrix();	
 		
 	}
 	
@@ -157,8 +144,9 @@ public class UserController {
 	/**
 	 * HTTP POST method (/users)
 	 * 
-	 * @param user represents the new User object being sent.
-	 * @return The newly created object with a 201 code.
+	 * @param user represents The new User object being sent.
+	 * @param result BindingResult for handling binding results.
+	 * @return The newly created Map with a 201 code.
 	 * 
 	 * Sends custom error messages when incorrect input is used
 	 */

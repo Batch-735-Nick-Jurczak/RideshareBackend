@@ -27,7 +27,7 @@ public class Driver {
 	 * The main method of the Driver class.
 	 * 
 	 * @param args represents any CLI arguments.
-	 * @throws Exception
+	 *
 	 */
 	
 	public static void main(String[] args) {

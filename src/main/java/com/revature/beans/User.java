@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Component;
 
 /**
- * This model represents the users of the app that are not admins, rather the riders and drivers.
+ * This entity represents the users of the app that are not admins, rather the riders and drivers.
  * 
  *
  */
@@ -35,7 +35,11 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name="users")
 public class User implements Serializable {
+	
+	
 	private static final long serialVersionUID = 1L;
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
