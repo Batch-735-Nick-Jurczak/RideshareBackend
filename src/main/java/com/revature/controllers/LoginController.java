@@ -44,11 +44,20 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/login")
 public class LoginController {
 	
+	
+	/**
+	 * Wired User service
+	 */
 	@Autowired
 	private UserService us;
 	
+	/**
+	 * Wired Distance Service
+	 */
 	@Autowired
 	private DistanceService ds;
+	
+	
 	
 	@GetMapping//("/{userName}/{passWord}")
 	public Map<String, Set<String>> login(

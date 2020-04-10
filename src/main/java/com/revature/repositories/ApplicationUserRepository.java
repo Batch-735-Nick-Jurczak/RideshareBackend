@@ -10,6 +10,14 @@ import org.springframework.stereotype.Repository;
 import com.revature.beans.ApplicationUser;
 import com.revature.beans.User;
 
+/**
+ * ApplicationUser Repository using JpaRepository with some custom queries.
+ * 
+ * @author David Anderson
+ *
+ */
+
+
 @Repository
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, String> {
 	

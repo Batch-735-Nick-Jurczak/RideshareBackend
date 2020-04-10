@@ -51,12 +51,26 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags= {"User"})
 public class UserController {
 	
+	
+	
+	
+	/**
+	 * 
+	 * Autowired User Service
+	 */
 	@Autowired
 	private UserService us;
 	
+	
+	/**
+	 * Autowired Batch Service
+	 */
 	@Autowired
 	private BatchService bs;
 	
+	/**
+	 * Autowired Distance Service
+	 */
 	@Autowired
 	private DistanceService ds;
 	
@@ -77,15 +91,14 @@ public class UserController {
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
-		//List<User> aps =  new ArrayList<User>();
+
 		System.out.println(address);
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
-//		
-	    Map<String, User> topfive = new HashMap<String, User>();
-//		
+
+		Map<String, User> topfive = new HashMap<String, User>();
+		
 		for(User d : us.getActiveDrivers()) {
-//			
 			String add = d.gethAddress();
 			String city = d.gethCity();
 			String state = d.gethState();

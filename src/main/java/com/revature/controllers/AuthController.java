@@ -49,7 +49,18 @@ public class AuthController {
 	@Autowired
 	private UserServiceImpl us;
 	
-	@Autowired AdminServiceImpl as;
+	@Autowired 
+	private AdminServiceImpl as;
+	
+	
+	/**
+	 * Method used to create a JWT with it's paired user/admin, if the user exists in the ApplicationUser table. This endpoint
+	 * needs to be called when registering any new user or admin.
+	 * 
+	 * @param authRequest A UsernameAndPasswordAuthenticationRequest object, just contains username and password
+	 * @return Returns a response entity along with a user OR admin and their respective web token.
+	 * @throws Exception Will throw a bad credentials exception if the application user is not found.
+	 */
 	
 	@PostMapping
 	public ResponseEntity<?> createAuthToken(@RequestBody UsernameAndPasswordAuthenticationRequest authRequest) throws Exception {

@@ -21,6 +21,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * 
+ * This class extends the Spring Security UsernamePasswordAuthenticationFilter class. Has two methods overridden, the first
+ * to check the validity of a username and password, and the second are what needs to happen once the authentication is 
+ * successful.
+ * 
+ * @author Mason King, David Anderson
+ *
+ */
+
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
 	private final AuthenticationManager authManager;
@@ -32,7 +42,10 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	}
 
 
-
+/**
+ * This method is where the actual authentication work happens from the request. It checks against our ApplicationUser object. Note, if we were using
+ * the granted authorities it would also pull those as well.
+ */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		
@@ -55,7 +68,11 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 	}
 
 
-
+/**
+ *  This method handles what happens when an authentication is successful. It creates the web token, sets the subject (also known as the principle,
+ *  think of it as the current web service user) adds their authorities to their claim (this is not implemented currently), sets the issue date
+ *  and expiration date of the token, and returns the token in the header.
+ */
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {

@@ -23,7 +23,12 @@ public class ApplicationController {
 	@Autowired
 	private ApplicationUserService as;
 	
-	@ApiOperation(value="Returns all admins")
+	
+	/**
+	 * This method will return all the application users. 
+	 * @return Returns a list of all application users
+	 */
+	@ApiOperation(value="Returns all applicationUsers")
 	@GetMapping
 	public List<ApplicationUser> getAppUsers() {
 		return as.getAppUsersByUsername();

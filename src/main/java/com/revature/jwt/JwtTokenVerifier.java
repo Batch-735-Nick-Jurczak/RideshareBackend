@@ -32,6 +32,13 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * This a child class of the Spring Security OncePerRequestFilter class. It verifies a requests web token at
+ * every single endpoint in our application.
+ * 
+ * @author Mason King
+ *
+ */
 @Component
 public class JwtTokenVerifier extends OncePerRequestFilter {
 	
@@ -42,7 +49,10 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 	@Autowired
 	private JwtUtility jwtUtil;
 	
-	
+/**
+ * This method overrides the OncePerRequestFilter's method doFilterInternal. It checks the token sent at each request with the methods in the 
+ * JwtUtility class. See the OncePerRequestFilter class for more information.
+ */
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse resp, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -59,7 +69,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 		String usernameFromToken = jwtUtil.extractUsername(token);
 		try {
 			
-			String secretKey = "revaturesupersecurekeyfortherideshareapplicationitissupposedtobethislongyesiknowitislong";
 			
 		if(usernameFromToken != null && SecurityContextHolder.getContext().getAuthentication()==null) {
 			UserDetails userDetails = this.appUserService.loadUserByUsername(usernameFromToken);

@@ -19,6 +19,14 @@ import com.revature.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.revature.services.impl.ApplicationUserService;
 
 
+/**
+ * This class is the configuration class for Spring Security
+ * 
+ * @author David Anderson
+ *
+ */
+
+
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,6 +35,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private JwtTokenVerifier jwtTokenVerifier;
 	
+	/**
+	 * Creates a ApplicationSecurityConfig object with a ApplicationUserService and JwtTokenVerifier
+	 * 
+	 * @param appService
+	 * @param jwtTokenVerifier
+	 */
 	
 	@Autowired
 	public ApplicationSecurityConfig(ApplicationUserService appService, JwtTokenVerifier jwtTokenVerifier) {
@@ -70,11 +84,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 			
 	}
 	
+	
+	/**
+	 * A required bean by Spring Security. The Authentication Manager manages your authentication providers, which are where the work is done.
+	 */
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
+	
+	/**
+	 * Our password encoder for encoding passwords into our ApplicationUser repository. Right now we are not encrypting passwords at all,
+	 * but Spring Security expects this method here. The NoOpPassword is shown as deprecated because it's bad practice to persist actual passwords.
+	 * 
+	 * @return Returns the PasswordEncoder object
+	 */
 	
 	
 	@Bean
