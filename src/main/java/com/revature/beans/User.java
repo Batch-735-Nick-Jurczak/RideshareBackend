@@ -20,11 +20,25 @@ import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
+
+import org.springframework.stereotype.Component;
+
+/**
+ * User class that represents a user. All users have an id, username, first and last names, email, phone number,
+ * booleans for if they are a driver, active, or accepting rides, multiple fields for both home and work addresses,
+ * and a corresponding batch
+ * 
+ * @author Chris Eshelman
+ *
+ */
+
 @Component
 @Entity
 @Table(name="users")
 public class User implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
@@ -36,6 +50,7 @@ public class User implements Serializable {
 	@Size(min=3,max=12)
 	@Pattern(regexp="^\\w+\\.?\\w+$")
 	private String userName;
+	
 	@ManyToOne
 	@JoinColumn(name="batch_number")
 	private Batch batch;
@@ -53,20 +68,27 @@ public class User implements Serializable {
 	@Size(max=30)
 	@Pattern(regexp="^[a-zA-Z\\u00C0-\\u017F]+[- ]?[a-zA-Z\\u00C0-\\u017F]+$")
 	private String lastName;
+	
 	@NotBlank
 	@Email
 	@Pattern(regexp="^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$")
 	private String email;
+	
 	@NotBlank
 	@Column(name="phone_number")
 	@Pattern(regexp="^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$")
 	private String phoneNumber;
+	
 	@Column(name="is_driver")
 	private boolean isDriver;
+	
 	@Column(name="is_active")
 	private boolean isActive;
+	
 	@Column(name="is_accepting_rides")
 	private boolean isAcceptingRides;
+	
+	// These fields are used to represent the user's home address
 	@NotBlank
 	@Column(name = "h_address")
 	private String hAddress;
@@ -79,6 +101,8 @@ public class User implements Serializable {
 	@NotBlank
 	@Column(name = "h_state")
 	private String hState;
+	
+	// These fields are used to represent the user's work address
 	@NotBlank
 	@Column(name = "w_address")
 	private String wAddress;
@@ -154,6 +178,7 @@ public class User implements Serializable {
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 	}
+	
 	public User(int userId, @NotBlank String userName, Batch batch, @NotBlank String firstName,
 			@NotBlank String lastName, @Email String email, @NotBlank String phoneNumber, String hAddress, String hCity,
 			String hZip, String hState, String wAddress, String wCity, String wZip, String wState) {
@@ -174,6 +199,7 @@ public class User implements Serializable {
 		this.wZip = wZip;
 		this.wState = wState;
 	}
+	
 	public User(int userId, @NotBlank String userName, Batch batch, @NotBlank String firstName,
 			@NotBlank String lastName, @Email String email, @NotBlank String phoneNumber, boolean isDriver,
 			boolean isActive, boolean isAcceptingRides, String hAddress, String hCity, String hZip, String hState,
@@ -198,63 +224,83 @@ public class User implements Serializable {
 		this.wZip = wZip;
 		this.wState = wState;
 	}
+	
 	public int getUserId() {
 		return userId;
 	}
+	
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+	
 	public String getUserName() {
 		return userName;
 	}
+	
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
 	public Batch getBatch() {
 		return batch;
 	}
+	
 	public void setBatch(Batch batch) {
 		this.batch = batch;
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
 	public String getLastName() {
 		return lastName;
 	}
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
+	
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	
 	public boolean isDriver() {
 		return isDriver;
 	}
+	
 	public void setDriver(boolean isDriver) {
 		this.isDriver = isDriver;
 	}
+	
 	public boolean isActive() {
 		return isActive;
 	}
+	
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+	
 	public boolean isAcceptingRides() {
 		return isAcceptingRides;
 	}
+	
 	public void setAcceptingRides(boolean isAcceptingRides) {
 		this.isAcceptingRides = isAcceptingRides;
 	}
@@ -263,81 +309,65 @@ public class User implements Serializable {
 		return hAddress;
 	}
 
-
 	public void sethAddress(String hAddress) {
 		this.hAddress = hAddress;
 	}
-
 
 	public String gethCity() {
 		return hCity;
 	}
 
-
 	public void sethCity(String hCity) {
 		this.hCity = hCity;
 	}
-
 
 	public String gethZip() {
 		return hZip;
 	}
 
-
 	public void sethZip(String hZip) {
 		this.hZip = hZip;
 	}
-
 
 	public String gethState() {
 		return hState;
 	}
 
-
 	public void sethState(String hState) {
 		this.hState = hState;
 	}
-
 
 	public String getwAddress() {
 		return wAddress;
 	}
 
-
 	public void setwAddress(String wAddress) {
 		this.wAddress = wAddress;
 	}
-
 
 	public String getwCity() {
 		return wCity;
 	}
 
-
 	public void setwCity(String wCity) {
 		this.wCity = wCity;
 	}
-
 
 	public String getwZip() {
 		return wZip;
 	}
 
-
 	public void setwZip(String wZip) {
 		this.wZip = wZip;
 	}
-
 
 	public String getwState() {
 		return wState;
 	}
 
-
 	public void setwState(String wState) {
 		this.wState = wState;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -363,6 +393,7 @@ public class User implements Serializable {
 		result = prime * result + ((wZip == null) ? 0 : wZip.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -414,6 +445,7 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", batch=" + batch + ", firstName=" + firstName

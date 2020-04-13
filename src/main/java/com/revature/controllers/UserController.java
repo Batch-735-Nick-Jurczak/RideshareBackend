@@ -57,18 +57,24 @@ public class UserController {
 	@Autowired
 	private DistanceService ds;
 	
+	/**
+	 * HTTP GET method (/users)
+	 * 
+	 * @param address represents the location of the user.
+	 * @return A list of the 5 closest drivers based on the address.
+	 */
+	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
 		
-		System.out.println(address);
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
-	
-	    Map<String, User> topfive = new HashMap<String, User>();
-	
-		for(User d : us.getActiveDrivers()) {
 		
+	    Map<String, User> topfive = new HashMap<String, User>();
+		
+		for(User d : us.getActiveDrivers()) {
+			
 			String add = d.gethAddress();
 			String city = d.gethCity();
 			String state = d.gethState();
@@ -95,14 +101,16 @@ public class UserController {
 	 * @param isDriver represents if the user is a driver or rider.
 	 * @param username represents the user's username.
 	 * @param location represents the batch's location.
-	 * @return A list of all the users, users by is-driver, user by username and users by is-driver and location.
+	 * @param batchNum represents the batch's number.
+	 * @return A list of all the users, users by is-driver, user by username, users by is-driver and location, and users by batch-num.
 	 */
 	
 	@ApiOperation(value="Returns all users", tags= {"User"}, notes="Can also filter by is-driver, location and username")
 	@GetMapping
 	public List<User> getUsers(@RequestParam(name="is-driver",required=false)Boolean isDriver,
 							   @RequestParam(name="username",required=false)String username,
-							   @RequestParam(name="location", required=false)String location) {
+							   @RequestParam(name="location", required=false)String location,
+							   @RequestParam(name="batch-num", required=false)Integer batchNum) {
 		
 		if (isDriver != null && location != null) {
 			return us.getUserByRoleAndLocation(isDriver.booleanValue(), location);
@@ -110,6 +118,8 @@ public class UserController {
 			return us.getUserByRole(isDriver.booleanValue());
 		} else if (username != null) {
 			return us.getUserByUsername(username);
+		} else if (batchNum != null) {
+			return us.getActiveDriversWithOpenSeats(batchNum.intValue());
 		}
 		
 		return us.getUsers();
@@ -145,11 +155,11 @@ public class UserController {
 		System.out.println(user.isDriver());
 		 Map<String, Set<String>> errors = new HashMap<>();
 		 
+		 //for loop steps through all fields sent by the register user form and checks to see if any of the fields are empty
 		 for (FieldError fieldError : result.getFieldErrors()) {
 		      String code = fieldError.getCode();
 		      String field = fieldError.getField();
 		      if (code.equals("NotBlank") || code.equals("NotNull")) {
-	    	  
 		    	  switch (field) {
 		    	  case "userName":
 		    		  errors.computeIfAbsent(field, key -> new HashSet<>()).add("Username field required");
@@ -185,6 +195,7 @@ public class UserController {
 		    		  errors.computeIfAbsent(field, key -> new HashSet<>()).add(field+" required");
 		    	  }
 		      }
+		      
 		      //username custom error message
 		      else if (code.equals("Size") && field.equals("userName")) {
 		          errors.computeIfAbsent(field, key -> new HashSet<>()).add("Username must be between 3 and 12 characters in length");
@@ -195,6 +206,7 @@ public class UserController {
 		      else if (code.equals("Valid") && field.equals("userName")) {
 		          errors.computeIfAbsent(field, key -> new HashSet<>()).add("Invalid username");
 		      }
+		      
 		      //first name custom error message
 		      else if (code.equals("Size") && field.equals("firstName")) {
 		          errors.computeIfAbsent(field, key -> new HashSet<>()).add("First name cannot be more than 30 characters in length");
@@ -205,6 +217,7 @@ public class UserController {
 		      else if (code.equals("Valid") && field.equals("firstName")) {
 		          errors.computeIfAbsent(field, key -> new HashSet<>()).add("Invalid first name");
 		      }
+		      
 		      //last name custom error message
 		      else if (code.equals("Size") && field.equals("lastName")) {
 		          errors.computeIfAbsent(field, key -> new HashSet<>()).add("Last name cannot be more than 30 characters in length");
@@ -215,6 +228,7 @@ public class UserController {
 		      else if (code.equals("Valid") && field.equals("lastName")) {
 		          errors.computeIfAbsent(field, key -> new HashSet<>()).add("Invalid last name");
 		      }
+		      
 		      //email custom error messages
 		      else if (code.equals("Email") && field.equals("email")) {
 		              errors.computeIfAbsent(field, key -> new HashSet<>()).add("Invalid Email");
@@ -222,6 +236,7 @@ public class UserController {
 		      else if (code.equals("Pattern") && field.equals("email")) {
 	              errors.computeIfAbsent(field, key -> new HashSet<>()).add("Invalid Email");
 		      }
+		      
 		      //phone number custom error messages
 		      else if (code.equals("Pattern") && field.equals("phoneNumber")) {
 	              errors.computeIfAbsent(field, key -> new HashSet<>()).add("Invalid Phone Number");
@@ -233,7 +248,7 @@ public class UserController {
 				user.setBatch(bs.getBatchByNumber(user.getBatch().getBatchNumber()));
 		 		us.addUser(user);
 		 		
-
+		 		
 		 	}
 		    return errors;
 		
@@ -248,7 +263,7 @@ public class UserController {
 	
 	@ApiOperation(value="Updates user by id", tags= {"User"})
 	@PutMapping
-	public User updateUser(@Valid @RequestBody User user) {
+	public User updateUser(@RequestBody User user) {
 		return us.updateUser(user);
 	}
 	
