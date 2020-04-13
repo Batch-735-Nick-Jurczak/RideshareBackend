@@ -115,6 +115,8 @@ public class User implements Serializable {
 	@NotBlank
 	@Column(name = "w_state")
 	private String wState;
+	
+	// These fields are used to temporarily store distance and time for pagination and filtering.
 	@Transient
 	private double distance;
 	@Transient
@@ -367,6 +369,23 @@ public class User implements Serializable {
 
 	public void setwState(String wState) {
 		this.wState = wState;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public double getTime() {
+		return time;
+	}
+
+	public void setTime(double time) {
+		this.time = time;
 	}
 
 	@Override

@@ -16,4 +16,5 @@ public interface UserService {
 	public String deleteUserById(int id);
 	public List<User> getActiveDrivers();
 	public List<User> getActiveDriversWithOpenSeats(int batchNum);
+	public String getGoogleHomeAddress(User user);
 }

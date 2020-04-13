@@ -35,6 +35,7 @@ public class DistanceServiceImpl implements DistanceService {
 	 * point as an array of strings, to every given destination as an array of strings.
 	 * 
 	 * @return A list of 5 of the closest Drivers.
+	 * @deprecated use PageServiceImpl instead to utilize Sorting and Pagination.
 	 * */
 	
 	// This function gets all of the available drivers and then returns the 5 closest. This should be used for best client performance,
