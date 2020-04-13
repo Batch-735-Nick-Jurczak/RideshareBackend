@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -90,6 +91,10 @@ public class User implements Serializable {
 	@NotBlank
 	@Column(name = "w_state")
 	private String wState;
+	@Transient
+	private double distance;
+	@Transient
+	private double time;
 	
 	public User() {
 		super();
