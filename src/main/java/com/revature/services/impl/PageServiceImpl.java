@@ -89,7 +89,8 @@ public class PageServiceImpl implements PageService {
 		
 		// Create a list of destinations to be passed to Google API for calculating distances.
 		for(int d = 0; d < userlist.size(); d++) {
-			destinations[d] = us.getGoogleHomeAddress(userlist.get(d));			
+			//destinations[d] = us.getGoogleHomeAddress(userlist.get(d));	
+			destinations[d] = userlist.get(d).gethAddress() + ", " + userlist.get(d).gethCity() + ", " + userlist.get(d).gethState();
 		}
 	
 		System.out.println("Destination Array:\n" + destinations);
@@ -125,8 +126,8 @@ public class PageServiceImpl implements PageService {
 			break;
 			}
 		case 2: {	// Sort by number of available seats.
-			userlist.sort((d1, d2) -> Integer.compare(cs.getCarById(d1.getUserId()).getAvailableSeats(),
-					cs.getCarById(d2.getUserId()).getAvailableSeats()));
+			//userlist.sort((d1, d2) -> Integer.compare(cs.getCarById(d1.getUserId()).getAvailableSeats(),
+			//		cs.getCarById(d2.getUserId()).getAvailableSeats()));
 			break;
 			}
 		case 3: {	// Sort by First Name of Driver.
