@@ -387,6 +387,17 @@ public class User implements Serializable {
 	public void setTime(double time) {
 		this.time = time;
 	}
+	
+	/**
+	 * Returns the address of a given user as an address string formatted for Google Maps.
+	 * 
+	 * @param id represents the user's id number.
+	 * @return A string formatted for the Google Maps API, which includes street, city, and state.
+	 */
+
+	public String getGoogleHomeAddress() {
+		return this.gethAddress() + ", " + this.gethCity() + ", " + this.gethState();
+	}
 
 	@Override
 	public int hashCode() {
