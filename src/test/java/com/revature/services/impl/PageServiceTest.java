@@ -1,24 +1,17 @@
 package com.revature.services.impl;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -28,6 +21,7 @@ import com.revature.beans.User;
 import com.revature.repositories.CarRepository;
 import com.revature.repositories.UserRepository;
 import com.revature.services.CarService;
+import com.revature.services.PageService;
 import com.revature.services.UserService;
 
 @RunWith(SpringRunner.class)
@@ -36,17 +30,19 @@ public class PageServiceTest {
 	@InjectMocks
 	private PageServiceImpl ps;
 
-	@MockBean
+	@Mock
 	private UserService us;
 	
 	@MockBean
 	private CarService cs;
 	
-	@Mock
+	@MockBean
 	private CarRepository cr;
 	
 	@Mock
 	private UserRepository ur;
+	
+	@Mock DistanceServiceImpl dsi;
 
 	@Test
 	public void test() {
@@ -56,7 +52,12 @@ public class PageServiceTest {
 		users.add(new User(3,"gpichmann2", new Batch(), "Grady", "Pichmann", "gpichmann2@artisteer.com", "212-374-3466", "7 Carpenter Plaza", "New York City", "10275", "NY", "30401 Esker Point", "Des Moines", "50347", "IA"));
 		users.add(new User(4,"gpichmann3", new Batch(), "Grady", "Pichmann", "gpichmann3@artisteer.com", "212-374-3466", "8 Carpenter Plaza", "New York City", "10275", "NY", "30401 Esker Point", "Des Moines", "50347", "IA"));
 		users.add(new User(5,"gpichmann4", new Batch(), "Grady", "Pichmann", "gpichmann4@artisteer.com", "212-374-3466", "9 Carpenter Plaza", "New York City", "10275", "NY", "30401 Esker Point", "Des Moines", "50347", "IA"));
-		when(us.getUserById(1)).thenReturn(users.get(1));
+		Mockito.when(us.getUserById(1)).thenReturn(users.get(0));
+		Mockito.when(us.getActiveDriversWithOpenSeats(1)).thenReturn(users);
+		Mockito.when(us.getGoogleHomeAddress(users.get(0)))
+		.thenReturn(users.get(0).gethAddress() + ", " 
+		+ users.get(0).gethCity() + ", " 
+		+ users.get(0).gethState());
 		List<User> results = new ArrayList<User>();
 		try {
 			results = ps.getPage(1, 1, 0, 1);

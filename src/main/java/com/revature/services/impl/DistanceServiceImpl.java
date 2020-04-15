@@ -166,13 +166,16 @@ public class DistanceServiceImpl implements DistanceService {
 	 * */
 	
 	public String getGoogleMAPKey() {
-        Map<String, String> env = System.getenv();
-        for (Map.Entry <String, String> entry: env.entrySet()) {
-            if(entry.getKey().equals("googleMapAPIKey")) {
-                return entry.getValue();
-            }
-        }
-        return null;
-    }
+		return "AIzaSyC9aj7YrGlzZ2qgWGGhXTgqPc5sX8G4OL4";
+	}
+		
+//        Map<String, String> env = System.getenv();
+//        for (Map.Entry <String, String> entry: env.entrySet()) {
+//            if(entry.getKey().equals("googleMapAPIKey")) {
+//                return entry.getValue();
+//            }
+//        }
+//        return null;
+  
 
 }

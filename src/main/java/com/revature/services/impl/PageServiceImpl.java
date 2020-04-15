@@ -126,7 +126,8 @@ public class PageServiceImpl implements PageService {
 			break;
 			}
 		case 2: {	// Sort by number of available seats.
-			//userlist.sort((d1, d2) -> Integer.compare(cs.getCarById(d1.getUserId()).getAvailableSeats(),
+			userlist.sort((d1, d2) -> Integer.compare(d1.getCar().getAvailableSeats(), 
+					d2.getCar().getAvailableSeats()));
 			//		cs.getCarById(d2.getUserId()).getAvailableSeats()));
 			break;
 			}
@@ -158,13 +159,14 @@ public class PageServiceImpl implements PageService {
 	 * */
 	
 	public String getGoogleMAPKey() {
-        Map<String, String> env = System.getenv();
-        for (Map.Entry <String, String> entry: env.entrySet()) {
-            if(entry.getKey().equals("googleMapAPIKey")) {
-                return entry.getValue();
-            }
-        }
-        return null;
+		return "AIzaSyC9aj7YrGlzZ2qgWGGhXTgqPc5sX8G4OL4";
+//        Map<String, String> env = System.getenv();
+//        for (Map.Entry <String, String> entry: env.entrySet()) {
+//            if(entry.getKey().equals("googleMapAPIKey")) {
+//                return entry.getValue();
+//            }
+//        }
+//        return null;
     }
 
 }
