@@ -3,7 +3,6 @@ package com.revature.services.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,12 +70,15 @@ public class PageServiceImpl implements PageService {
 	 * @author Calvin England
 	 * */
 	@Override
-	public List<User> getPage(int id, int batch, int filter, int page) throws ApiException, InterruptedException, IOException {
+	public List<User> getPage(User user, int filter, int page) throws ApiException, InterruptedException, IOException {
 		
-		User current = us.getUserById(id);
-		System.out.println("Current: " + current);
+		int userId = user.getUserId();
+		System.out.println("userid: " + userId);
+		User current = us.getUserById(userId);
 		
-		List<User> userlist = us.getActiveDriversWithOpenSeats(batch);
+		int batchNumber = user.getBatch().getBatchNumber();
+		System.out.println("batchNumber: " + batchNumber);
+		List<User> userlist = us.getActiveDriversWithOpenSeats(batchNumber);
 		System.out.println("Query:\n" + userlist);
 		
 		List<User> result = new ArrayList<User>();
@@ -190,13 +192,14 @@ public class PageServiceImpl implements PageService {
 	 * @return the first variable found named as "googleMapAPIKey"
 	 */
 	public String getGoogleMAPKey() {
-        Map<String, String> env = System.getenv();
-        for (Map.Entry <String, String> entry: env.entrySet()) {
-            if(entry.getKey().equals("googleMapAPIKey")) {
-                return entry.getValue();
-            }
-        }
-        return null;
+		return "AIzaSyC9aj7YrGlzZ2qgWGGhXTgqPc5sX8G4OL4";
+//        Map<String, String> env = System.getenv();
+//        for (Map.Entry <String, String> entry: env.entrySet()) {
+//            if(entry.getKey().equals("googleMapAPIKey")) {
+//                return entry.getValue();
+//            }
+//        }
+//        return null;
     }
 
 }
