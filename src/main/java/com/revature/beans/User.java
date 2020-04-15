@@ -398,6 +398,10 @@ public class User implements Serializable {
 	public void setTime(double time) {
 		this.time = time;
 	}
+	
+	public String getGoogleHomeAddress() {
+        return this.gethAddress() + ", " + this.gethCity() + ", " + this.gethState();
+    }
 
 	@Override
 	public int hashCode() {
