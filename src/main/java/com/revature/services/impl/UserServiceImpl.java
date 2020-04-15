@@ -124,5 +124,28 @@ public class UserServiceImpl implements UserService {
 		ur.deleteById(id);
 		return "User with id: " + id + " was deleted.";
 	}
+	
+	/**
+	 * Call UserRepository's custom query method getActiveDriversWithOpenSeats.
+	 * 
+	 * @param batchNum represents the user's batch number.
+	 * @return A list of users whose cars have open seats.
+	 */
+	
+	@Override
+	public List<User> getActiveDriversWithOpenSeats(int batchNum) {
+		return ur.getActiveDriversWithOpenSeats(batchNum);
+	}
 
+	/**
+	 * Returns the address of a given user as an address string formatted for Google Maps.
+	 * 
+	 * @param id represents the user's id number.
+	 * @return A string formatted for the Google Maps API, which includes street, city, and state.
+	 */
+
+	@Override
+	public String getGoogleHomeAddress(User user) {
+		return user.gethAddress() + ", " + user.gethCity() + ", " + user.gethState();
+	}
 }

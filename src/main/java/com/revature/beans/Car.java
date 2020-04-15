@@ -12,12 +12,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
 /**
- * Car class that represents a user's car. All cars have an id, color, seats, make, model, year
+ * Car class that represents a user's car. All cars have an id, color,  total seats, available seats, make, model, year
  * and the corresponding user.
  * 
  * @author Adonis Cabreja
@@ -36,15 +35,23 @@ public class Car implements Serializable {
 	@Column(name="car_id")
 	private int carId;
 	
+	@Column(name = "color")
 	private String color;
 	
 	@Positive
-	private int seats;
+	@Column(name = "total_seats")
+	private int totalSeats;
+	
+	@Positive
+	@Column(name = "available_seats")
+	private int availableSeats;
 	
 	@NotBlank
+	@Column(name = "car_make")
 	private String make;
 	
 	@NotBlank
+	@Column(name = "car_model")
 	private String model;
 	
 	@Positive
@@ -54,21 +61,6 @@ public class Car implements Serializable {
 	@OneToOne
 	@JoinColumn(name="user_id", unique=true)
 	private User user;
-	
-	public Car() {
-		super();
-	}
-
-	public Car(int carId, String color, int seats, String make, String model, int year, User user) {
-		super();
-		this.carId = carId;
-		this.color = color;
-		this.seats = seats;
-		this.make = make;
-		this.model = model;
-		this.year = year;
-		this.user = user;
-	}
 
 	public int getCarId() {
 		return carId;
@@ -86,12 +78,20 @@ public class Car implements Serializable {
 		this.color = color;
 	}
 
-	public int getSeats() {
-		return seats;
+	public int getTotalSeats() {
+		return totalSeats;
 	}
 
-	public void setSeats(int seats) {
-		this.seats = seats;
+	public void setTotalSeats(int totalSeats) {
+		this.totalSeats = totalSeats;
+	}
+
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
 	}
 
 	public String getMake() {
@@ -130,11 +130,12 @@ public class Car implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + availableSeats;
 		result = prime * result + carId;
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + ((make == null) ? 0 : make.hashCode());
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
-		result = prime * result + seats;
+		result = prime * result + totalSeats;
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		result = prime * result + year;
 		return result;
@@ -149,41 +150,71 @@ public class Car implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Car other = (Car) obj;
+		if (availableSeats != other.availableSeats)
+			return false;
 		if (carId != other.carId)
 			return false;
 		if (color == null) {
 			if (other.color != null)
 				return false;
-		} 
-		else if (!color.equals(other.color))
+		} else if (!color.equals(other.color))
 			return false;
 		if (make == null) {
 			if (other.make != null)
 				return false;
-		} 
-		else if (!make.equals(other.make))
+		} else if (!make.equals(other.make))
 			return false;
 		if (model == null) {
 			if (other.model != null)
 				return false;
-		} 
-		else if (!model.equals(other.model))
+		} else if (!model.equals(other.model))
 			return false;
-		if (seats != other.seats)
+		if (totalSeats != other.totalSeats)
 			return false;
 		if (user == null) {
 			if (other.user != null)
 				return false;
-		} 
-		else if (!user.equals(other.user))
+		} else if (!user.equals(other.user))
 			return false;
-		return year == other.year;
+		if (year != other.year)
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Car [carId=" + carId + ", color=" + color + ", seats=" + seats + ", make=" + make + ", model=" + model
-				+ ", year=" + year + ", user=" + user + "]";
+		return "Car [carId=" + carId + ", color=" + color + ", totalSeats=" + totalSeats + ", availableSeats="
+				+ availableSeats + ", make=" + make + ", model=" + model + ", year=" + year + ", user=" + user + "]";
+	}
+
+	public Car(int carId, String color, @Positive int totalSeats, @NotBlank String make,
+			@NotBlank String model, @Positive int year, User user) {
+		super();
+		this.carId = carId;
+		this.color = color;
+		this.totalSeats = totalSeats;
+		this.availableSeats = totalSeats;
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.user = user;
+	}
+	
+	public Car(int carId, String color, @Positive int totalSeats, @Positive int availableSeats, @NotBlank String make,
+			@NotBlank String model, @Positive int year, User user) {
+		super();
+		this.carId = carId;
+		this.color = color;
+		this.totalSeats = totalSeats;
+		this.availableSeats = availableSeats;
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.user = user;
+	}
+
+	public Car() {
+		super();
 	}
 	
 }

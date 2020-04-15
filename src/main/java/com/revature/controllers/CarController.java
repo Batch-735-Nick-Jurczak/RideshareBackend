@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.Car;
@@ -44,13 +45,16 @@ public class CarController {
 	/**
 	 * HTTP GET method (/cars)
 	 * 
-	 * @return A list of all the cars.
+	 * @param availableSeats is a check if the end user wants only cars with open seats.
+	 * @return A list of all the cars, or cars with open seats.
 	 */
 	
 	@ApiOperation(value="Returns all cars", tags= {"Car"})
 	@GetMapping
-	public List<Car> getCars() {
-		
+	public List<Car> getCars(@RequestParam(name="available-seats", required=false)Boolean availableSeats) {
+		if (availableSeats != null && availableSeats.booleanValue() == true) {
+			return cs.getCarsWithOpenSeats();
+		}
 		return cs.getCars();
 	}
 	
