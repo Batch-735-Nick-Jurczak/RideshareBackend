@@ -59,11 +59,12 @@ public class PageServiceTest {
 	public void setUp() throws Exception {
 		users = new ArrayList<User>();
 		destinations = new ArrayList<String>();
-		User user1 = new User(1,"gpichmann0", new Batch(), "Grady", "Pichmann", "gpichmann0@artisteer.com", "212-374-3466", "5 Carpenter Plaza", "New York City", "10275", "NY", "30401 Esker Point", "Des Moines", "50347", "IA");
-		User user2 = new User(2,"gpichmann1", new Batch(), "Mike", "Pichmann", "gpichmann1@artisteer.com", "212-374-3466", "", "Columbus", "43220", "OH", "30401 Esker Point", "Des Moines", "50347", "IA");
-		User user3 = new User(3,"gpichmann2", new Batch(), "Minh", "Pichmann", "gpichmann2@artisteer.com", "212-374-3466", "830 Pierstorff Parkway", "Omaha", "68197", "NE", "30401 Esker Point", "Des Moines", "50347", "IA");
-		User user4 = new User(4,"gpichmann3", new Batch(), "Calvin", "Pichmann", "gpichmann3@artisteer.com", "212-374-3466", "86978 Sage Junction", "Elmira", "14905", "NY", "30401 Esker Point", "Des Moines", "50347", "IA");
-		User user5 = new User(5,"gpichmann4", new Batch(), "Tyler", "Pichmann", "gpichmann4@artisteer.com", "212-374-3466", "496 High St", "Morgantown", "26505", "WV", "30401 Esker Point", "Des Moines", "50347", "IA");
+		Batch batch = new Batch(1, "Tampa");
+		User user1 = new User(1,"gpichmann0", batch, "Grady", "Pichmann", "gpichmann0@artisteer.com", "212-374-3466", "5 Carpenter Plaza", "New York City", "10275", "NY", "30401 Esker Point", "Des Moines", "50347", "IA");
+		User user2 = new User(2,"gpichmann1", batch, "Mike", "Pichmann", "gpichmann1@artisteer.com", "212-374-3466", "", "Columbus", "43220", "OH", "30401 Esker Point", "Des Moines", "50347", "IA");
+		User user3 = new User(3,"gpichmann2", batch, "Minh", "Pichmann", "gpichmann2@artisteer.com", "212-374-3466", "830 Pierstorff Parkway", "Omaha", "68197", "NE", "30401 Esker Point", "Des Moines", "50347", "IA");
+		User user4 = new User(4,"gpichmann3", batch, "Calvin", "Pichmann", "gpichmann3@artisteer.com", "212-374-3466", "86978 Sage Junction", "Elmira", "14905", "NY", "30401 Esker Point", "Des Moines", "50347", "IA");
+		User user5 = new User(5,"gpichmann4", batch, "Tyler", "Pichmann", "gpichmann4@artisteer.com", "212-374-3466", "496 High St", "Morgantown", "26505", "WV", "30401 Esker Point", "Des Moines", "50347", "IA");
 		Car car1 = new Car(1, "blue", 4, 1, "tesla", "model 3", 2020, user1);
 		Car car2 = new Car(1, "blue", 4, 3, "tesla", "model 3", 2020, user2);
 		Car car3 = new Car(1, "blue", 4, 2, "tesla", "model 3", 2020, user3);
@@ -94,7 +95,7 @@ public class PageServiceTest {
 		.thenReturn(users.get(0).getGoogleHomeAddress());
 		List<User> results = new ArrayList<User>();
 		try {
-			results = ps.getPage(1, 1, 0, 1);
+			results = ps.getPage(users.get(0), 0, 1);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -129,7 +130,7 @@ public class PageServiceTest {
 		.thenReturn(users.get(4).getGoogleHomeAddress());
 		List<User> results = new ArrayList<User>();
 		try {
-			results = ps.getPage(1, 1, 0, 1);
+			results = ps.getPage(users.get(0), 0, 1);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -162,7 +163,7 @@ public class PageServiceTest {
 		.thenReturn(users.get(4).getGoogleHomeAddress());
 		List<User> results = new ArrayList<User>();
 		try {
-			results = ps.getPage(1, 1, 1, 1);
+			results = ps.getPage(users.get(0), 1, 1);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -196,7 +197,7 @@ public class PageServiceTest {
 		.thenReturn(users.get(4).getGoogleHomeAddress());
 		List<User> results = new ArrayList<User>();
 		try {
-			results = ps.getPage(1, 1, 3, 1);
+			results = ps.getPage(users.get(0), 3, 1);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -231,7 +232,7 @@ public class PageServiceTest {
 		.thenReturn(users.get(4).getGoogleHomeAddress());
 		List<User> results = new ArrayList<User>();
 		try {
-			results = ps.getPage(1, 1, 3, 1);
+			results = ps.getPage(users.get(0), 3, 1);
 		} catch (ApiException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {

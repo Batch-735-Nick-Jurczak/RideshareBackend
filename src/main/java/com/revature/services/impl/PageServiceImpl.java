@@ -3,7 +3,6 @@ package com.revature.services.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,13 +70,15 @@ public class PageServiceImpl implements PageService {
 	 * @author Calvin England
 	 * */
 	@Override
-	public List<User> getPage(int id, int batch, int filter, int page) throws ApiException, InterruptedException, IOException {
+	public List<User> getPage(User user, int filter, int page) throws ApiException, InterruptedException, IOException {
 		
-		User current = us.getUserById(id);
-		List<User> userlist = us.getActiveDriversWithOpenSeats(batch);
+		int batchNumber = user.getBatch().getBatchNumber();
+		List<User> userlist = us.getActiveDriversWithOpenSeats(batchNumber);
+		System.out.println("Query:\n" + userlist);
+		
 		List<User> result = new ArrayList<User>();
 		
-		String origin = current.getGoogleHomeAddress();
+		String origin = us.getGoogleHomeAddress(user);
 		System.out.println("Origin: " + origin);
 
 		// Add distance and duration from distance matrix to each driver
@@ -182,13 +183,13 @@ public class PageServiceImpl implements PageService {
 	 * @return the first variable found named as "googleMapAPIKey"
 	 */
 	public String getGoogleMAPKey() {
-        Map<String, String> env = System.getenv();
-        for (Map.Entry <String, String> entry: env.entrySet()) {
-            if(entry.getKey().equals("googleMapAPIKey")) {
-                return entry.getValue();
-            }
-        }
-        return null;
+       Map<String, String> env = System.getenv();
+       for (Map.Entry <String, String> entry: env.entrySet()) {
+           if(entry.getKey().equals("googleMapAPIKey")) {
+               return entry.getValue();
+           }
+       }
+       return null;
     }
 
 }

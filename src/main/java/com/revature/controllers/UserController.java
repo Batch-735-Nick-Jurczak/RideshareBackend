@@ -31,6 +31,7 @@ import com.google.maps.errors.ApiException;
 import com.revature.beans.User;
 import com.revature.services.BatchService;
 import com.revature.services.DistanceService;
+import com.revature.services.PageService;
 import com.revature.services.UserService;
 
 import io.swagger.annotations.Api;
@@ -65,6 +66,13 @@ public class UserController {
 	
 
 	
+	private PageService ps;
+	
+	@Autowired
+	public void setPs(PageService ps) {
+		this.ps = ps;
+	}
+
 	/**
 	 * HTTP GET method (/users)
 	 * 
@@ -77,7 +85,57 @@ public class UserController {
 	@Autowired
 	private BatchService bs;
 	
+	@ApiOperation(value="Returns user drivers", tags= {"User"})
+	@GetMapping("/driver/{address}")
+	public List <User> getDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
+		
+		List<String> destinationList = new ArrayList<String>();
+		String [] origins = {address};
+		
+	    Map<String, User> topfive = new HashMap<String, User>();
+		
+		for(User d : us.getActiveDrivers()) {
+			
+			String add = d.gethAddress();
+			String city = d.gethCity();
+			String state = d.gethState();
+			
+			String fullAdd = add + ", " + city + ", " + state;
+			
+			destinationList.add(fullAdd);
+		
+			topfive.put(fullAdd, d);
+					
+	}
 
+	String [] destinations = new String[destinationList.size()];
+	
+	destinations = destinationList.toArray(destinations);
+	
+
+	/**
+	 * HTTP GET method (/driver)
+	 * Get paginated list of drivers
+	 * @param userId the current user's id
+	 * @param filter the parameter to filter by
+	 * @param page which page to return
+	 * @return the list of paginatedDrivers
+	 * @throws ApiException
+	 * @throws InterruptedException
+	 * @throws IOException
+	 */
+	@ApiOperation(value="Returns paginated list of drivers", tags= {"User"})
+	@GetMapping("/driver")
+	public List <User> getPaginatedDrivers(@RequestParam int userId, @RequestParam int filter, @RequestParam int page) throws ApiException, InterruptedException, IOException {
+		
+		User user = us.getUserById(userId);
+		
+		List<User> paginatedDrivers= ps.getPage(user, filter, page);
+		
+		return paginatedDrivers;
+
+	}
+	
 	/**
 	 * HTTP GET method (/users)
 	 * 
