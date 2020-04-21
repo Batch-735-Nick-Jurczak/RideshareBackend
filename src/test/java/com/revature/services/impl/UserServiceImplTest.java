@@ -109,4 +109,14 @@ public class UserServiceImplTest {
 		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testGetActiveDriversWithOpenSeats() {
+		List<User> expected = new ArrayList<>();
+		expected.add(new User(1, "userName", new Batch(), "adonis", "cabreja", "adonis@gmail.com", "123-456-789"));
+		when(ur.getActiveDriversWithOpenSeats(1)).thenReturn(expected);
+		List<User> actual = usi.getActiveDriversWithOpenSeats(1);
+		
+		assertEquals(expected, actual);
+	}
+	
 }

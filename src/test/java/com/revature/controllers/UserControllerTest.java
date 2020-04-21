@@ -5,8 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 
 import java.util.ArrayList;
@@ -24,6 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.beans.Batch;
 import com.revature.beans.User;
+import com.revature.services.BatchService;
+import com.revature.services.DistanceService;
 import com.revature.services.UserService;
 
 @RunWith(SpringRunner.class)
@@ -38,6 +43,12 @@ public class UserControllerTest {
 		
 	@MockBean
 	private UserService us;
+	
+	@MockBean
+	private BatchService bs;
+	
+	@MockBean
+	private DistanceService ds;
 	
 	@Test
 	public void testGettingUsers() throws Exception {
@@ -111,6 +122,19 @@ public class UserControllerTest {
 	}
 	
 	@Test
+    public void testGetActiveDriversWithOpenSeats() throws Exception {
+
+        List<User> users = new ArrayList<>();
+        users.add(new User());
+        users.add(new User());
+        when(us.getActiveDriversWithOpenSeats(1)).thenReturn(users);
+
+        mvc.perform(get("/users?batch-num=1"))
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$", hasSize(2)));
+    }
+	
+	@Test
 	public void testAddingUser() throws Exception {
 		
 		Batch batch = new Batch(111, "address");
@@ -121,8 +145,10 @@ public class UserControllerTest {
 		
 		when(us.addUser(user)).thenReturn(user);
 		
-		mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(user)))
-		   .andExpect(status().isCreated())
+		System.out.println(om.writeValueAsString(user));
+		
+		mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON_UTF8).content(om.writeValueAsString(user)))
+		   .andExpect(status().isOk()).andDo(print())
 		   .andExpect(jsonPath("$.userName").value("userName"));
 	}
 	
@@ -134,7 +160,7 @@ public class UserControllerTest {
 		
 		when(us.updateUser(user)).thenReturn(user);
 		
-		mvc.perform(put("/users/{id}", 1).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(user)))
+		mvc.perform(put("/users").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(user)))
 		   .andExpect(status().isOk())
 		   .andExpect(jsonPath("$.userName").value("userName"));
 	}
