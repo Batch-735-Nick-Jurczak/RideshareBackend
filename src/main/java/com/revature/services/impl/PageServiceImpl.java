@@ -70,20 +70,51 @@ public class PageServiceImpl implements PageService {
 	 * @return A page of drivers sorted by the given filter.
 	 * @author Calvin England
 	 * */
-	
 	@Override
 	public List<User> getPage(int id, int batch, int filter, int page) throws ApiException, InterruptedException, IOException {
 		
 		User current = us.getUserById(id);
 		List<User> userlist = us.getActiveDriversWithOpenSeats(batch);
 		List<User> result = new ArrayList<User>();
-		String origin = current.getGoogleHomeAddress();
+		
+		String origin = us.getGoogleHomeAddress(current);
+		System.out.println("Origin: " + origin);
+
+		// Add distance and duration from distance matrix to each driver
+		List<User> driversWithDistanceMatrix = addDistanceMatrixToDrivers(userlist, origin);
+		System.out.println("-");
+		
+		// Sort based off of Filter
+		List<User> filteredDrivers = filterDrivers(driversWithDistanceMatrix, filter);
+		
+		// Paginate
+		for(int i = 0; i < pagesize; i++) {
+			result.add(filteredDrivers.get((pagesize * (page - 1)) + i));
+		}
+		
+		System.out.println(result);
+		return result;
+	}
+
+	/**
+	 * Uses the Google Maps API to add distance and time from origin to drivers
+	 * 
+	 * @param userlist the list of drivers before distance and time are added
+	 * @param origin the address of the current user
+	 * @return list of drivers with distance and time from origin
+	 * @throws ApiException
+	 * @throws InterruptedException
+	 * @throws IOException
+	 * @author Calvin England
+	 */
+	public List<User> addDistanceMatrixToDrivers(List<User> userlist, String origin) throws ApiException, InterruptedException, IOException {
+
 		String[] destinations = new String[userlist.size()];
 		
 		// Create a list of destinations to be passed to Google API for calculating distances.
 		for(int d = 0; d < userlist.size(); d++) {
-			destinations[d] = userlist.get(d).getGoogleHomeAddress();	
-			destinations[d] = userlist.get(d).gethAddress() + ", " + userlist.get(d).gethCity() + ", " + userlist.get(d).gethState();
+			destinations[d] = us.getGoogleHomeAddress(userlist.get(d));	
+			//destinations[d] = userlist.get(d).gethAddress() + ", " + userlist.get(d).gethCity() + ", " + userlist.get(d).gethState();
 		}
 		
 		// Create a Google Maps Distance API Call to calculate the distance between the given origin(s) and destinations.
@@ -105,45 +136,51 @@ public class PageServiceImpl implements PageService {
 			System.out.println("invalid address");
 			}
 		}
-
-		// Sort based off of Filter
-		switch(filter) {
-		case 1: {	// Sort by Time between origin and destination.
-			userlist.sort((d1, d2) -> Double.compare(d1.getTime(), d2.getTime()));
-			break;
-			}
-		case 2: {	// Sort by number of available seats. getCarByUserID arrived broken. Recommend restructuring relationships.
-			//userlist.sort((d1, d2) -> Integer.compare(cs.getCarByUserId(d1.getUserId()).getAvailableSeats(),
-			//		cs.getCarByUserId(d2.getUserId()).getAvailableSeats()));
-			break;
-			}
-		case 3: {	// Sort by First Name of Driver.
-			userlist.sort((d1, d2) -> d1.getFirstName().compareTo(d2.getFirstName()));
-			break;
-			}
-		default: {	// Sort by Distance from Origin.
-			userlist.sort((d1, d2) -> Double.compare(d1.getDistance(), d2.getDistance()));
-			break;
-			}
-		}
-		
-		// Paginate
-		for(int i = 0; i < pagesize; i++) {
-			result.add(userlist.get((pagesize * (page - 1)) + i));
-		}
-		
-		System.out.println(result);
-		return result;
+		return userlist;
 	}
 	
 	/**
-	 * Retrieves a GoogleMap Key from the user's System Environment Variables.
+	 * Sorts drivers by a given filter
 	 * 
-	 * Retrieves all of the user's system environment variables as a map then returns 
-	 * the first variable found named as "googleMapAPIKey" (Security Issue?)
+	 * filter = 0 (DEFAULT): sort by distance from origin
+	 * filter = 1: sort by time from origin
+	 * filter = 2: sort by available seats
+	 * filter = 3: sort by first name
 	 * 
-	 * */
-	
+	 * @param userlist the list of drivers with distance and time from origin
+	 * @param filter the field to filter by
+	 * @return the sorted list of drivers
+	 * @author Calvin England
+	 */
+	public List<User> filterDrivers(List<User> userlist, int filter) {
+		switch(filter) {
+			case 1: {	// Sort by Time between origin and destination.
+				userlist.sort((d1, d2) -> Double.compare(d1.getTime(), d2.getTime()));
+				break;
+				}
+			case 2: {	// Sort by number of available seats.
+				userlist.sort((d1, d2) -> Integer.compare(d1.getCar().getAvailableSeats(), 
+						d2.getCar().getAvailableSeats()));
+				break;
+				}
+			case 3: {	// Sort by First Name of Driver.
+				userlist.sort((d1, d2) -> d1.getFirstName().compareTo(d2.getFirstName()));
+				break;
+				}
+			default: {	// Sort by Distance from Origin.
+				userlist.sort((d1, d2) -> Double.compare(d1.getDistance(), d2.getDistance()));
+				break;
+				}
+			}
+		return userlist;
+	}
+
+	/**
+	 * Retrieves a GoogleMap Key from the System Environment Variables.
+	 * 
+	 * Retrieves all of the system environment variables as a map then
+	 * @return the first variable found named as "googleMapAPIKey"
+	 */
 	public String getGoogleMAPKey() {
         Map<String, String> env = System.getenv();
         for (Map.Entry <String, String> entry: env.entrySet()) {

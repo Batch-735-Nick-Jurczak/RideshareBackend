@@ -9,17 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.springframework.stereotype.Component;
-
 
 import org.springframework.stereotype.Component;
 
@@ -60,6 +57,10 @@ public class User implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="batch_number")
 	private Batch batch;
+	
+	@OneToOne
+	@JoinColumn(name="car_id")
+	private Car car;
 	
 	@Valid
 	@NotBlank
@@ -152,7 +153,7 @@ public class User implements Serializable {
 
 
 	public User(int userId, @NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName,
-			Batch batch,
+			Batch batch, 
 			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String firstName,
 			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String lastName,
 			@Email @Pattern(regexp = "^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$") String email,
@@ -352,6 +353,16 @@ public class User implements Serializable {
 		this.batch = batch;
 	}
 	
+	public Car getCar() {
+		return car;
+	}
+
+
+	public void setCar(Car car) {
+		this.car = car;
+	}
+
+
 	public String getFirstName() {
 		return firstName;
 	}
