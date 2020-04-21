@@ -43,7 +43,7 @@ public class AdminController {
 	
 	/**
 	 * HTTP GET method (/users)
-	 * 
+	 * TO-DO DELETE THIS??
 	 * @return A list of all the admins.
 	 */
 	

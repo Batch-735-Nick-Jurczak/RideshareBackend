@@ -72,18 +72,13 @@ public class PageServiceImpl implements PageService {
 	@Override
 	public List<User> getPage(User user, int filter, int page) throws ApiException, InterruptedException, IOException {
 		
-		int userId = user.getUserId();
-		System.out.println("userid: " + userId);
-		User current = us.getUserById(userId);
-		
 		int batchNumber = user.getBatch().getBatchNumber();
-		System.out.println("batchNumber: " + batchNumber);
 		List<User> userlist = us.getActiveDriversWithOpenSeats(batchNumber);
 		System.out.println("Query:\n" + userlist);
 		
 		List<User> result = new ArrayList<User>();
 		
-		String origin = us.getGoogleHomeAddress(current);
+		String origin = us.getGoogleHomeAddress(user);
 		System.out.println("Origin: " + origin);
 
 		// Add distance and duration from distance matrix to each driver

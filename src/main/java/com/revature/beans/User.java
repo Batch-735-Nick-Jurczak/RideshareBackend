@@ -52,8 +52,6 @@ public class User implements Serializable {
 	@JoinColumn(name="batch_number")
 	private Batch batch;
 	
-	@OneToOne
-	@JoinColumn(name="car_id")
 	private Car car;
 	
 	@Valid

@@ -44,7 +44,7 @@ public class CarController {
 	
 	/**
 	 * HTTP GET method (/cars)
-	 * 
+	 * TO-DO DELETE THIS??
 	 * @param availableSeats is a check if the end user wants only cars with open seats.
 	 * @return A list of all the cars, or cars with open seats.
 	 */
