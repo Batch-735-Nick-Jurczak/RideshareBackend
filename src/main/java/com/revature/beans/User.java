@@ -2,6 +2,7 @@ package com.revature.beans;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
@@ -58,9 +60,9 @@ public class User implements Serializable {
 	@JoinColumn(name="batch_number")
 	private Batch batch;
 	
-	@OneToOne
-	@JoinColumn(name="car_id")
-	private Car car;
+//	@OneToOne
+//	@JoinColumn(name="car_id")
+//	private Car car;
 	
 	@Valid
 	@NotBlank
@@ -122,6 +124,7 @@ public class User implements Serializable {
 	@NotBlank
 	@Column(name = "w_state")
 	private String wState;
+	
 	@NotBlank
 	@Column(name = "roles")
 	private String role;
@@ -353,14 +356,14 @@ public class User implements Serializable {
 		this.batch = batch;
 	}
 	
-	public Car getCar() {
-		return car;
-	}
-
-
-	public void setCar(Car car) {
-		this.car = car;
-	}
+//	public Car getCar() {
+//		return car;
+//	}
+//
+//
+//	public void setCar(Car car) {
+//		this.car = car;
+//	}
 
 
 	public String getFirstName() {

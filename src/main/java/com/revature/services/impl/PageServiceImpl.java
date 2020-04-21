@@ -159,8 +159,8 @@ public class PageServiceImpl implements PageService {
 				break;
 				}
 			case 2: {	// Sort by number of available seats.
-				userlist.sort((d1, d2) -> Integer.compare(d1.getCar().getAvailableSeats(), 
-						d2.getCar().getAvailableSeats()));
+				userlist.sort((d1, d2) -> Integer.compare(cs.getCarByUserId(d1.getUserId()).getAvailableSeats(), 
+						cs.getCarByUserId(d1.getUserId()).getAvailableSeats()));
 				break;
 				}
 			case 3: {	// Sort by First Name of Driver.

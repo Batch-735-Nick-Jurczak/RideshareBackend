@@ -9,7 +9,7 @@ insert into applicationusers values('gpichmann0', true, true,true,true,true,'pas
 insert into applicationusers values('smigheli1', true, true,true,true,true,'password','USER');
 insert into applicationusers values('admin', true, true,true,true,true,'password','USER');
 
-insert into users values 
+insert into users (user_id, email, first_name, h_address, h_city, h_state, h_zip, is_active, is_driver, is_accepting_rides, last_name, password, phone_number, roles, user_name, w_address, w_city, w_state, w_zip, batch_number) values 
 (1, 'gpichmann0@artisteer.com', 'Grady', '5 Carpenter Plaza', 'New York City', 'NY', '10275', True, True, True, 'Pichmann','password', '212-374-3466','ADMIN','gpichmann0' ,'30401 Esker Point', 'Des Moines', 'IA', '50347', 1),
 (2, 'smigheli1@indiatimes.com', 'Salvidor', '6371 Elka Court', 'Columbus', 'OH', '43220', true, true, true, 'Migheli', 'password','614-513-2776', 'ROLE_USER','smigheli1', '35747 3rd Park', 'Philadelphia', 'PA', '19131', 1),
 (3, 'fbraunroth2@ebay.co.uk', 'Fabien', '830 Pierstorff Parkway', 'Omaha', 'NE', '68197', true, true, true, 'Braunroth', 'password','402-694-8099', 'USER','fbraunroth2', '747 Crownhardt Place', 'New York City', 'NY', '10270', 1),
