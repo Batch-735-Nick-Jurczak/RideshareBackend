@@ -63,9 +63,14 @@ public class LoginController {
 			if(u.size() != 0) {
 			   info.computeIfAbsent("name", key -> new HashSet<>()).add(u.get(0).getFirstName()+" "+u.get(0).getLastName());
 			   info.computeIfAbsent("userid", key -> new HashSet<>()).add(u.get(0).getUserId()+"");
+			   info.computeIfAbsent("hcity", key -> new HashSet<>()).add(u.get(0).gethCity()+"");
+			   info.computeIfAbsent("haddress", key -> new HashSet<>()).add(u.get(0).gethAddress()+"");
+			   info.computeIfAbsent("hstate", key -> new HashSet<>()).add(u.get(0).gethState()+"");
 			}else {
 				info.computeIfAbsent("userNotFound", key -> new HashSet<>()).add("User not found!");
 			}
+			System.out.print("Info: ");
+			System.out.println(info);
 			return info;
 		}else {
 			 return errors;

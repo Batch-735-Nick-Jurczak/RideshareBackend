@@ -23,7 +23,7 @@ import com.revature.services.UserService;
 
 @Service
 public class DistanceServiceImpl implements DistanceService {
-	
+
 	@Autowired
 	private UserService us;
 
@@ -41,10 +41,11 @@ public class DistanceServiceImpl implements DistanceService {
 	// however we found the function broken and elected to sort drivers on the front end. A fixed version of this method will
 	// optimize the application.
 	@Override
-	public List<User> distanceMatrix(String[] origins, String[] destinations) throws ApiException, InterruptedException, IOException {
-		
+	public List<User> distanceMatrix(String[] origins, String[] destinations)
+			throws ApiException, InterruptedException, IOException {
+
 		Map<String, User> userDestMap = new HashMap<String, User>();
-		
+
 		List<String> destinationList = new ArrayList<String>();
 		
 		// Create an Array of Drivers, and navigate that Array to pull their address information.
@@ -95,11 +96,10 @@ public class DistanceServiceImpl implements DistanceService {
 					// System.out.println((double) t.rows[i].elements[j].distance.inMeters);
 					
 				} catch (Exception e) {
-				System.out.println("invalid address");
+					System.out.println("invalid address");
 				}
 			}
 		}
-
 		System.out.println("-");
 		
 		// Previous iteration used arrlist as a means to sort drivers by distance. However this logic
@@ -112,7 +112,7 @@ public class DistanceServiceImpl implements DistanceService {
 		// to sort the drivers by distance. Then the users can be used as the key for the map, ensuring
 		// each key to the map is unique and won't produce unexpected results.
 		Collections.sort(arrlist);
-		
+
 		System.out.println(arrlist);
 		List<String> destList = new ArrayList<String>();
 		
@@ -141,7 +141,7 @@ public class DistanceServiceImpl implements DistanceService {
 		
 		// Copies existing ArrayList into the String Array - another unnecessary conversion.
 		destArray = destList.toArray(destArray);
-		
+
 		List<User> userList = new ArrayList<User>();
 		
 		// For each destination, retrieve a user from the userDestMap using an address from the destArray
