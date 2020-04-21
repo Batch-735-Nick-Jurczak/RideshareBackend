@@ -148,5 +148,4 @@ public class UserServiceImpl implements UserService {
 	public List<User> getActiveDriversWithOpenSeats(int batchNum) {
 		return ur.getActiveDriversWithOpenSeats(batchNum);
 	}
-
 }

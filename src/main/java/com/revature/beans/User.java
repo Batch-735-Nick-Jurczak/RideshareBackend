@@ -140,6 +140,12 @@ public class User implements Serializable {
 	}
 
 
+	// These fields are used to temporarily store distance and time for pagination and filtering.
+	@Transient
+	private double distance;
+	@Transient
+	private double time;
+	
 	public User() {
 		super();
 	}
@@ -475,6 +481,34 @@ public class User implements Serializable {
 
 	public void setRole(String role) {
 		this.role = "ROLE_USER";
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public double getTime() {
+		return time;
+	}
+
+	public void setTime(double time) {
+		this.time = time;
+	}
+	
+	/**
+	 * Returns the address of a given user as an address string formatted for Google Maps.
+	 * 
+	 * @param id represents the user's id number.
+	 * @return A string formatted for the Google Maps API, which includes street, city, and state.
+	 */
+
+	public String getGoogleHomeAddress() {
+		return this.gethAddress() + ", " + this.gethCity() + ", " + this.gethState();
 	}
 
 	@Override
