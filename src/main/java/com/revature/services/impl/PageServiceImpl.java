@@ -77,7 +77,7 @@ public class PageServiceImpl implements PageService {
 		List<User> userlist = us.getActiveDriversWithOpenSeats(batch);
 		List<User> result = new ArrayList<User>();
 		
-		String origin = us.getGoogleHomeAddress(current);
+		String origin = current.getGoogleHomeAddress();
 		System.out.println("Origin: " + origin);
 
 		// Add distance and duration from distance matrix to each driver
@@ -113,7 +113,7 @@ public class PageServiceImpl implements PageService {
 		
 		// Create a list of destinations to be passed to Google API for calculating distances.
 		for(int d = 0; d < userlist.size(); d++) {
-			destinations[d] = us.getGoogleHomeAddress(userlist.get(d));	
+			destinations[d] = userlist.get(d).getGoogleHomeAddress();	
 			//destinations[d] = userlist.get(d).gethAddress() + ", " + userlist.get(d).gethCity() + ", " + userlist.get(d).gethState();
 		}
 		
