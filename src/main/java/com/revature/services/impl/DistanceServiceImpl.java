@@ -84,7 +84,6 @@ public class DistanceServiceImpl implements DistanceService {
 		for (int i = 0; i < origins.length; i++) {
 			for (int j = 0; j < destinations.length; j++) {
 				try {
-					// System.out.println((j+1) + "): " + t.rows[i].elements[j].distance.inMeters + " meters");
 					
 					// Adds the calculated distance to an array list.
 					arrlist.add((double) t.rows[i].elements[j].distance.inMeters);
@@ -92,15 +91,10 @@ public class DistanceServiceImpl implements DistanceService {
 					// pairs the calculated distance to its address into an unsorted map.
 					unsortMap.put((double) t.rows[i].elements[j].distance.inMeters, destinations[j]);
 					
-					// System.out.println((double) t.rows[i].elements[j].distance.inMeters);
-					
 				} catch (Exception e) {
-				System.out.println("invalid address");
 				}
 			}
 		}
-
-		System.out.println("-");
 		
 		// Previous iteration used arrlist as a means to sort drivers by distance. However this logic
 		// breaks down when multiple drivers use the same address because the address is used as the
@@ -113,7 +107,6 @@ public class DistanceServiceImpl implements DistanceService {
 		// each key to the map is unique and won't produce unexpected results.
 		Collections.sort(arrlist);
 		
-		System.out.println(arrlist);
 		List<String> destList = new ArrayList<String>();
 		
 		// remove from this list any entry after #5.
@@ -124,17 +117,13 @@ public class DistanceServiceImpl implements DistanceService {
 			
 		// Copies the ArrayList of distances into the double array - unnecessary conversion.
 		arrArray = arrlist.toArray(arrArray);
-			
-		System.out.println(arrArray);
-			
+
 		// For each entry in the double array, retrieve the address from the unsorted map
 		// using the distance as a key.
 		for(int c=0; c< arrArray.length; c++) {
 			String destination = unsortMap.get(arrArray[c]);
 			destList.add(destination);
 		}
-			
-		System.out.println(destList);
 
 		// Creates a new String Array for Destination.
 		String [] destArray = new String[destList.size()];
@@ -148,9 +137,7 @@ public class DistanceServiceImpl implements DistanceService {
 		// And add that user to userList.
 		for(int x=0; x< destArray.length; x++) {
 			User a = userDestMap.get(destArray[x]);
-			System.out.println(a);
 			userList.add(a);
-			System.out.println(userList);
 		}
 
 		return userList;
