@@ -87,7 +87,7 @@ public class UserController {
 	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
 	@GetMapping("/driver/{address}")
-	public List <User> getDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
+	public List<User> getDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
 		
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
@@ -112,7 +112,9 @@ public class UserController {
 	
 	destinations = destinationList.toArray(destinations);
 	
-
+	return null;
+	
+	}
 	/**
 	 * HTTP GET method (/driver)
 	 * Get paginated list of drivers

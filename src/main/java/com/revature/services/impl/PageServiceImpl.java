@@ -3,6 +3,7 @@ package com.revature.services.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,7 @@ public class PageServiceImpl implements PageService {
 		
 		List<User> result = new ArrayList<User>();
 		
-		String origin = us.getGoogleHomeAddress(user);
+		String origin = user.getGoogleHomeAddress();
 		System.out.println("Origin: " + origin);
 
 		// Add distance and duration from distance matrix to each driver
