@@ -61,7 +61,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
 		
 		if(Strings.isNullOrEmpty(authHeader)|| !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(req, resp);
-			System.out.println("did not work");
 			return;
 		}
 		

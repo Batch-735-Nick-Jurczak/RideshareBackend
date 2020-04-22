@@ -65,7 +65,6 @@ public class AuthController {
 	@PostMapping
 	public ResponseEntity<?> createAuthToken(@RequestBody UsernameAndPasswordAuthenticationRequest authRequest) throws Exception {
 		
-		System.out.println("making it to the endpoint");
 		try {
 		authManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
 			}

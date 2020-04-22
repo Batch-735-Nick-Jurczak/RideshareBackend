@@ -48,10 +48,8 @@ public class DistanceServiceImpl implements DistanceService {
 						
 		}
 		
-		//System.out.println(destinationList);
 		
 		 destinations = new String[destinationList.size()];
-//		
 		destinations = destinationList.toArray(destinations);
 		
 		

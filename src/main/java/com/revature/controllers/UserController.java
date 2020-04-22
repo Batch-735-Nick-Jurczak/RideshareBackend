@@ -79,31 +79,12 @@ public class UserController {
 	
 
 	
-
-//	/**
-//	 * HTTP GET method (/users)
-//	 * 
-//	 * @return A list of all the users, users by is-driver, user by username and users by is-driver and location.
-//	 */
-//	@ApiOperation(value="Returns user drivers", tags= {"User"})
-//	@GetMapping
-//	public List<User> getActiveDrivers() {
-//		return us.getActiveDrivers();
-//	}
-
-	/*@ApiOperation(value="Returns user drivers", tags= {"User"})
-	@GetMapping
-	public List<User> getActiveDrivers() {
-		return us.getActiveDrivers();
-	}*/
-
 	
 	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
 
-		System.out.println(address);
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
 
@@ -150,21 +131,8 @@ public class UserController {
 		
 		return us.getUsers();
 	}
+
 	
-	/**
-	 * HTTP GET (users/{id})
-	 * 
-	 * @param id represents the user's id.
-	 * @return A user that matches the id.
-	 */
-	
-//	@ApiOperation(value="Returns user by id", tags= {"User"})
-//	@GetMapping("/{id}")
-//	public User getUserById(@PathVariable("id")int id) {
-//		
-//		return us.getUserById(id);
-//	}
-//	
 	/**
 	 * HTTP GET (users/{userName})
 	 * 
@@ -193,7 +161,6 @@ public class UserController {
 	@PostMapping
 	public Map<String, Set<String>> addUser(@Valid @RequestBody User user, BindingResult result) {
 		
-		System.out.println(user.isDriver());
 		 Map<String, Set<String>> errors = new HashMap<>();
 		 
 		 for (FieldError fieldError : result.getFieldErrors()) {
@@ -300,7 +267,6 @@ public class UserController {
 	@ApiOperation(value="Updates user by id", tags= {"User"})
 	@PutMapping
 	public User updateUser(@Valid @RequestBody User user) {
-		//System.out.println(user);
 		return us.updateUser(user);
 	}
 	
