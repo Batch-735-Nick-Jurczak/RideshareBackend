@@ -7,9 +7,9 @@ import com.google.maps.errors.ApiException;
 import com.revature.beans.User;
 
 
-public interface DistanceService {
+public interface PageService {
  
-	public List<User> distanceMatrix (String[] origins, String[] destinations) throws ApiException, InterruptedException, IOException ;
+	public List<User> getPage (int id, int batch, int filter, int page) throws ApiException, InterruptedException, IOException ;
 	
 	// Place key googleMapAPIKey & value apiKey (to be shared on slack) into Environment Vars.
 	public  String getGoogleMAPKey();

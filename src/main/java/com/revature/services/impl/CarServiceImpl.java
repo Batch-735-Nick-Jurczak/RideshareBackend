@@ -43,7 +43,7 @@ public class CarServiceImpl implements CarService {
 	
 	@Override
 	public Car getCarById(int id) {
-		return cr.findById(id).get();
+		return cr.getOne(id);
 	}
 
 	/**
@@ -93,6 +93,17 @@ public class CarServiceImpl implements CarService {
 	public String deleteCarById(int id) {
 		cr.deleteById(id);
 		return "Car with id: " + id + " was deleted.";
+	}
+	
+	/**
+	 * Calls CarRepository's custom query method getCarsWithOpenSeats.
+	 * 
+	 * @return A list of cars where availableSeats is greater than 0.
+	 */
+	
+	@Override
+	public List<Car> getCarsWithOpenSeats() {
+		return cr.getCarsWithOpenSeats();
 	}
 
 }
