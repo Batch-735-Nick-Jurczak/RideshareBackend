@@ -18,17 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.Admin;
+import com.revature.beans.ApplicationUser;
 import com.revature.services.AdminService;
+import com.revature.services.impl.ApplicationUserService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
  * AdminController takes care of handling our requests to /admins.
- * It provides methods that can perform tasks like all admins, admin by id, add admin, update admin, and
- * delete admin by id.
+ * It provides methods that can perform tasks like all admins, admin by username, add admin, update admin, and
+ * delete admin by username.
  * 
- * @author Adonis Cabreja
+ * @author Adonis Cabreja, David Anderson
  *
  */
 
@@ -38,8 +40,13 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags= {"Admin"})
 public class AdminController {
 	
+	
+	
 	@Autowired
 	private AdminService as;
+	
+	@Autowired
+	private ApplicationUserService appService;
 	
 	/**
 	 * HTTP GET method (/users)
@@ -55,24 +62,28 @@ public class AdminController {
 	}
 	
 	/**
-	 * HTTP GET method (/users/{id})
+	 * HTTP GET method (/users/{username})
 	 * 
-	 * @param id represents the admin's id.
-	 * @return An admin that matches the id.
+	 * @param username represents the admin's username.
+	 * @return An admin that matches the username.
 	 */
 	
-	@ApiOperation(value="Returns admin by id", tags= {"Admin"})
-	@GetMapping("/{id}")
-	public Admin getAdminById(@PathVariable("id")int id) {
+	@ApiOperation(value="Returns admin by username", tags= {"Admin"})
+	@GetMapping("/{username}")
+	public Admin getAdminById(@PathVariable("username") String username) {
 		
-		return as.getAdminById(id);
+		return as.getAdminById(username).get();
 	}
 	
 	/**
-	 * HTTP POST method (/users)
+	 * HTTP POST method (/admins)
+	 * 
+	 * Returns the admin object, as well as adds the admin to the ApplicationUser table with the role of "ADMIN"
+	 * for Spring Security
 	 * 
 	 * @param admin represents the new Admin object being sent.
 	 * @return The newly created object with a 201 code.
+	 * 
 	 */
 	
 	@ApiOperation(value="Adds a new admin", tags= {"Admin"})
@@ -89,24 +100,24 @@ public class AdminController {
 	 * @return The newly updated object.
 	 */
 	
-	@ApiOperation(value="Updates admin by id", tags= {"Admin"})
-	@PutMapping("/{id}")
+	@ApiOperation(value="Updates admin by username", tags= {"Admin"})
+	@PutMapping("/{username}")
 	public Admin updateAdmin(@Valid @RequestBody Admin admin) {
 		
 		return as.updateAdmin(admin);
 	}
 	
 	/**
-	 * HTTP DELETE method (/users/{id})
+	 * HTTP DELETE method (/users/{username})
 	 * 
-	 * @param id represents the admin's id.
+	 * @param username represents the admin's username.
 	 * @return A string that says which admin was deleted.
 	 */
 	
-	@ApiOperation(value="Deletes an admin by id", tags= {"Admin"})
-	@DeleteMapping("/{id}")
-	public String deleteAdmin(@PathVariable("id")int id) {
+	@ApiOperation(value="Deletes an admin by username", tags= {"Admin"})
+	@DeleteMapping("/{username}")
+	public String deleteAdmin(@PathVariable("username")String username) {
 		
-		return as.deleteAdminById(id);
+		return as.deleteAdminById(username);
 	}
 }

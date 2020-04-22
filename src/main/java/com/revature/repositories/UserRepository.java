@@ -1,6 +1,7 @@
 package com.revature.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -37,8 +38,17 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	 */
 	
 	@Query("select u from User u where u.userName = ?1")
-	public List<User> getUserByUsername(String username);
+	public Optional<User> getUserByUsername(String username);
+
+	/**
+	 * Custom query that uses the @Query annotation to select a user by username.
+	 * 
+	 * @param username represents the user's username.
+	 * @return Check {@link com.revature.services.impl.UserServiceImpl}
+	 */
 	
+	@Query("select u from User u where u.userName = ?1")
+	public List<User> getUsersByUsername(String username);
 	/**
 	 * Custom query that uses the @Query annotation to select a user by isDriver and location.
 	 * 

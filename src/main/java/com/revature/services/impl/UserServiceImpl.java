@@ -1,6 +1,7 @@
 package com.revature.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,19 @@ public class UserServiceImpl implements UserService {
 	 */
 	
 	@Override
-	public List<User> getUserByUsername(String username) {
+	public Optional<User> getUserByUsername(String username) {
 		return ur.getUserByUsername(username);
+	}
+	/**
+	 * Calls UserRepository's custom query method getUserByUsername.
+	 * 
+	 * @param username represents the user's username.
+	 * @return A user that matches the username.
+	 */
+	
+	@Override
+	public List<User> getUsersByUsername(String username) {
+		return ur.getUsersByUsername(username);
 	}
 	
 	/**

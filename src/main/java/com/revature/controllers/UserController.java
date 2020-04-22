@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,44 +54,43 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags= {"User"})
 public class UserController {
 	
+	
+	
+	
+	/**
+	 * 
+	 * Autowired User Service
+	 */
 	@Autowired
 	private UserService us;
 	
+	
+	/**
+	 * Autowired Batch Service
+	 */
 	@Autowired
 	private BatchService bs;
 	
+	/**
+	 * Autowired Distance Service
+	 */
 	@Autowired
 	private DistanceService ds;
 	
-	/**
-	 * HTTP GET method (/users)
-	 * 
-	 * @param isDriver represents if the user is a driver or rider.
-	 * @param username represents the user's username.
-	 * @param location represents the batch's location.
-	 * @return A list of all the users, users by is-driver, user by username and users by is-driver and location.
-	 */
+
 	
-	
-	/*@ApiOperation(value="Returns user drivers", tags= {"User"})
-	@GetMapping
-	public List<User> getActiveDrivers() {
-		return us.getActiveDrivers();
-	}*/
 	
 	
 	@ApiOperation(value="Returns user drivers", tags= {"User"})
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
-		//List<User> aps =  new ArrayList<User>();
-		System.out.println(address);
+
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
-//		
-	    Map<String, User> topfive = new HashMap<String, User>();
-//		
+
+		Map<String, User> topfive = new HashMap<String, User>();
+		
 		for(User d : us.getActiveDrivers()) {
-//			
 			String add = d.gethAddress();
 			String city = d.gethCity();
 			String state = d.gethState();
@@ -96,21 +98,11 @@ public class UserController {
 			String fullAdd = add + ", " + city + ", " + state;
 			
 			destinationList.add(fullAdd);
-//			
 			topfive.put(fullAdd, d);
-//						
 	}
-//		
-//		System.out.println(destinationList);
-//		
 		String [] destinations = new String[destinationList.size()];
-////		
 	destinations = destinationList.toArray(destinations);
-//		
 	return	ds.distanceMatrix(origins, destinations);
-//		
-//		
-		//return ds.distanceMatrix();	
 		
 	}
 	
@@ -134,31 +126,33 @@ public class UserController {
 		} else if (isDriver != null) {
 			return us.getUserByRole(isDriver.booleanValue());
 		} else if (username != null) {
-			return us.getUserByUsername(username);
+			return us.getUsersByUsername(username);
 		}
 		
 		return us.getUsers();
 	}
+
 	
 	/**
-	 * HTTP GET (users/{id})
+	 * HTTP GET (users/{userName})
 	 * 
 	 * @param id represents the user's id.
 	 * @return A user that matches the id.
 	 */
 	
-	@ApiOperation(value="Returns user by id", tags= {"User"})
-	@GetMapping("/{id}")
-	public User getUserById(@PathVariable("id")int id) {
+	@ApiOperation(value="Returns user by userName", tags= {"User"})
+	@GetMapping("/{userName}")
+	public User getUserByUserName(@PathVariable("userName")String userName) {
 		
-		return us.getUserById(id);
+		return us.getUserByUsername(userName).get();
 	}
 	
 	/**
 	 * HTTP POST method (/users)
 	 * 
-	 * @param user represents the new User object being sent.
-	 * @return The newly created object with a 201 code.
+	 * @param user represents The new User object being sent.
+	 * @param result BindingResult for handling binding results.
+	 * @return The newly created Map with a 201 code.
 	 * 
 	 * Sends custom error messages when incorrect input is used
 	 */
@@ -167,7 +161,6 @@ public class UserController {
 	@PostMapping
 	public Map<String, Set<String>> addUser(@Valid @RequestBody User user, BindingResult result) {
 		
-		System.out.println(user.isDriver());
 		 Map<String, Set<String>> errors = new HashMap<>();
 		 
 		 for (FieldError fieldError : result.getFieldErrors()) {
@@ -274,7 +267,6 @@ public class UserController {
 	@ApiOperation(value="Updates user by id", tags= {"User"})
 	@PutMapping
 	public User updateUser(@Valid @RequestBody User user) {
-		//System.out.println(user);
 		return us.updateUser(user);
 	}
 	

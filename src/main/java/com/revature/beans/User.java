@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,16 +23,38 @@ import org.springframework.stereotype.Component;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * This entity represents the users of the app that are not admins, rather the riders and drivers.
+ * 
+ *
+ */
+
+
+
 @Component
 @Entity
 @Table(name="users")
 public class User implements Serializable {
+	
+	
 	private static final long serialVersionUID = 1L;
+	
+	
+	/**
+	 * Validation is handled through the sql database with the validation annotations like notnull, pattern, and valid
+	 */
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
 	private int userId;
 
+	@Valid
+	@NotBlank
+	@Column(name = "password")
+	@Size(min=6, max=20)
+	private String password;
+	
 	@Valid
 	@NotBlank
 	@Column(name="user_name")
@@ -93,109 +116,29 @@ public class User implements Serializable {
 	@NotBlank
 	@Column(name = "w_state")
 	private String wState;
+	@NotBlank
+	@Column(name = "roles")
+	private String role;
 	
+	@Transient
+	private String token;
+	
+	
+	
+	public String getToken() {
+		return token;
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
 	public User() {
 		super();
 	}
 
-
-	public User(int userId, @NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName,
-			Batch batch,
-			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String firstName,
-			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String lastName,
-			@Email @Pattern(regexp = "^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$") String email,
-			@NotBlank @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$") String phoneNumber,
-			boolean isDriver, boolean isActive, boolean isAcceptingRides) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.batch = batch;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.isDriver = isDriver;
-		this.isActive = isActive;
-		this.isAcceptingRides = isAcceptingRides;
-	}
-
-	public User(@NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName, Batch batch,
-			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String firstName,
-			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String lastName,
-			@Email @Pattern(regexp = "^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$") String email,
-			@NotBlank @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$") String phoneNumber,
-			boolean isDriver, boolean isActive, boolean isAcceptingRides) {
-		super();
-		this.userName = userName;
-		this.batch = batch;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.isDriver = isDriver;
-		this.isActive = isActive;
-		this.isAcceptingRides = isAcceptingRides;
-	}
-
-	public User(int userId, @NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName,
-			Batch batch,
-			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String firstName,
-			@NotBlank @Size(max = 30) @Pattern(regexp = "^[a-zA-Z]+-?[a-zA-Z]+ ?[a-zA-Z]+-?[a-zA-Z]+$") String lastName,
-			@Email @Pattern(regexp = "^\\w+\\.?\\w+@\\w+\\.[a-zA-Z]{2,4}$") String email,
-			@NotBlank @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$") String phoneNumber) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.batch = batch;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-	}
-	public User(int userId, @NotBlank String userName, Batch batch, @NotBlank String firstName,
-			@NotBlank String lastName, @Email String email, @NotBlank String phoneNumber, String hAddress, String hCity,
-			String hZip, String hState, String wAddress, String wCity, String wZip, String wState) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.batch = batch;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.hAddress = hAddress;
-		this.hCity = hCity;
-		this.hZip = hZip;
-		this.hState = hState;
-		this.wAddress = wAddress;
-		this.wCity = wCity;
-		this.wZip = wZip;
-		this.wState = wState;
-	}
-	public User(int userId, @NotBlank String userName, Batch batch, @NotBlank String firstName,
-			@NotBlank String lastName, @Email String email, @NotBlank String phoneNumber, boolean isDriver,
-			boolean isActive, boolean isAcceptingRides, String hAddress, String hCity, String hZip, String hState,
-			String wAddress, String wCity, String wZip, String wState) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.batch = batch;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.isDriver = isDriver;
-		this.isActive = isActive;
-		this.isAcceptingRides = isAcceptingRides;
-		this.hAddress = hAddress;
-		this.hCity = hCity;
-		this.hZip = hZip;
-		this.hState = hState;
-		this.wAddress = wAddress;
-		this.wCity = wCity;
-		this.wZip = wZip;
-		this.wState = wState;
-	}
 	public int getUserId() {
 		return userId;
 	}
@@ -208,6 +151,17 @@ public class User implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 	public Batch getBatch() {
 		return batch;
 	}
@@ -334,6 +288,17 @@ public class User implements Serializable {
 
 	public void setwState(String wState) {
 		this.wState = wState;
+	}
+	
+
+
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = "ROLE_USER";
 	}
 
 

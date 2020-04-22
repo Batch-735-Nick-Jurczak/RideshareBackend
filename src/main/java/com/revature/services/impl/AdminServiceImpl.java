@@ -1,6 +1,7 @@
 package com.revature.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +35,6 @@ public class AdminServiceImpl implements AdminService {
 		return ar.findAll();
 	}
 
-	/**
-	 * Calls AdminRepository's getOne method found in the JpaRepository.
-	 * 
-	 * @param id represents the admin's id.
-	 * @return An admin that matches the id.
-	 */
-	
-	@Override
-	public Admin getAdminById(int id) {
-		return ar.findById(id).get();
-	}
 
 	/**
 	 * Calls AdminRepository's save method found in the JpaRepository.
@@ -73,14 +63,20 @@ public class AdminServiceImpl implements AdminService {
 	/**
 	 * Calls AdminRepository's deleteById method found in the JpaRepository.
 	 * 
-	 * @param id represents admin's id.
+	 * @param username represents admin's username.
 	 * @return A string that says which admin was deleted.
 	 */
 	
 	@Override
-	public String deleteAdminById(int id) {
-		ar.deleteById(id);
-		return "Admin with id: " + id + " was deleted.";
+	public String deleteAdminById(String username) {
+		ar.deleteById(username);
+		return "Admin with username: "+ username + " was deleted.";
 	}
+
+	
+	public Optional<Admin> getAdminById(String username){
+		return ar.getAdminByUsername(username);
+	}
+
 
 }

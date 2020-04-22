@@ -37,7 +37,7 @@ public class BatchServiceImpl implements BatchService {
 	/**
 	 * Calls BatchRepository's getOne method found in the JpaRepository.
 	 * 
-	 * @param number represents the batch number.
+	 * @param id represents the batch number.
 	 * @return A batch that matches the number.
 	 */
 	
