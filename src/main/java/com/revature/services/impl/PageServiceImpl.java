@@ -102,7 +102,7 @@ public class PageServiceImpl implements PageService {
 				userlist.get(j).setTime((t.rows[0].elements[j].duration.inSeconds)/60);
 				
 			} catch (Exception e) {
-			System.out.println("invalid address");
+			e.printStackTrace();
 			}
 		}
 
@@ -132,7 +132,6 @@ public class PageServiceImpl implements PageService {
 			result.add(userlist.get((pagesize * (page - 1)) + i));
 		}
 		
-		System.out.println(result);
 		return result;
 	}
 	
